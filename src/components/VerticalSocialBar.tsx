@@ -2,7 +2,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 const VerticalSocialBar = () => (
-  <div className="fixed bottom-8 left-10 flex flex-col items-center z-30">
+  <div className="absolute bottom-8 left-10 flex flex-col items-center z-30">
     <div className="flex flex-col gap-4 mb-6">
       <a
         href="https://github.com/yourusername"

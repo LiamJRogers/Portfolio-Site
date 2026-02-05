@@ -23,7 +23,7 @@ const Hero = () => {
       <NavBar />
       <VerticalSocialBar />
       {isDesktop && (
-        <SplashCursor className="pointer-events-none fixed inset-0 z-40" />
+        <SplashCursor className="pointer-events-none absolute inset-0 z-0" />
       )}
       <span
         className="hidden md:block absolute top-1/2 right-8 -translate-y-1/2 text-gray-600 text-lg tracking-widest"
