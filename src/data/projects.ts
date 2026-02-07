@@ -28,7 +28,7 @@ export const projects = [
     title: "Tv Tracking App",
     image: appImg,
     link: "https://github.com/LiamJRogers/Tv-Tracking-App",
-    technologies: ["Coming Soon"],
+    technologies: ["In Progress"],
   },
   {
     title: "More Projects",
