@@ -116,13 +116,30 @@ const demoItems = [
   },
 ];
 
-function Technologies() {
+function Technologies({
+  setCursorActive,
+  setInvert,
+}: {
+  setCursorActive: (active: boolean) => void;
+  setInvert: (invert: boolean) => void;
+}) {
   return (
-    <section className="relative py-8">
+    <section
+      className="relative py-8"
+      onMouseEnter={() => setCursorActive(true)}
+      onMouseLeave={() => {
+        setCursorActive(false);
+        setInvert(false);
+      }}
+    >
       <h2 className="mb-8 px-4 text-5xl font-bold tracking-wide leading-tight">
         Technologies
       </h2>
-      <div className="h-150 relative">
+      <div
+        className="h-150 relative"
+        onMouseEnter={() => setInvert(true)}
+        onMouseLeave={() => setInvert(false)}
+      >
         <FlowingMenu
           items={demoItems}
           speed={15}

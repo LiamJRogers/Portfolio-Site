@@ -34,15 +34,18 @@ const Hero = () => {
       >
         Liam Jack Rogers
       </span>
-      <div className="flex-1 flex flex-col items-start justify-start pt-16 md:pt-32 text-left px-16 md:px-48 w-full max-w-5xl">
+      <div className="flex flex-col items-center text-center px-4 md:px-0 w-full max-w-5xl mx-auto pt-16 md:pt-32">
         <span
           className="text-3xl md:text-4xl mb-4 text-gray-600"
           style={{ fontFamily: "'Herr Von Muellerhoff', cursive" }}
         >
           Hi, I'm Liam.
         </span>
-        <h1 className="text-5xl md:text-7xl font-extrabold text-black">
-          Full Stack Software Engineer
+        <h1
+          className="text-6xl md:text-8xl font-bold text-black"
+          style={{ fontFamily: "'Koulen', sans-serif" }}
+        >
+          Full Stack <br /> Software Engineer
         </h1>
       </div>
       <a

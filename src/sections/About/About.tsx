@@ -13,7 +13,13 @@ function useIsMobile(breakpoint = 768) {
   return isMobile;
 }
 
-const About = () => {
+const About = ({
+  setCursorActive,
+  setInvert,
+}: {
+  setCursorActive: (active: boolean) => void;
+  setInvert: (invert: boolean) => void;
+}) => {
   const isMobile = useIsMobile();
   const lanyardFov = isMobile ? 30 : 15;
 
@@ -29,9 +35,19 @@ const About = () => {
     <section
       id="about"
       className="min-h-screen flex flex-col md:flex-row items-stretch justify-end px-6 md:px-0 bg-gray-50 relative"
+      onMouseEnter={() => setCursorActive(true)}
+      onMouseLeave={() => {
+        setCursorActive(false);
+        setInvert(false);
+      }}
     >
-      <div className="block md:absolute md:inset-0 md:z-10 md:pointer-events-none w-full h-75 md:h-full">
-        <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} fov={lanyardFov} />
+      <div className="block md:absolute md:inset-0 md:z-10 md:pointer-events-auto w-full h-75 md:h-full">
+        <Lanyard
+          position={[0, 0, 20]}
+          gravity={[0, -40, 0]}
+          fov={lanyardFov}
+          setInvert={setInvert}
+        />
       </div>
       <div className="hidden md:block flex-1" />
       <div

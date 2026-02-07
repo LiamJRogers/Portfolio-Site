@@ -39,6 +39,7 @@ interface LanyardProps {
   gravity?: [number, number, number];
   fov?: number;
   transparent?: boolean;
+  setInvert?: (invert: boolean) => void;
 }
 
 export default function Lanyard({
@@ -46,6 +47,7 @@ export default function Lanyard({
   gravity = [0, -40, 0],
   fov = 20,
   transparent = true,
+  setInvert,
 }: LanyardProps) {
   return (
     <div className="relative z-0 w-full h-screen flex justify-center items-center transform scale-100 origin-center">
@@ -58,7 +60,7 @@ export default function Lanyard({
       >
         <ambientLight intensity={Math.PI} />
         <Physics gravity={gravity} timeStep={1 / 60}>
-          <Band />
+          <Band setInvert={setInvert} />
         </Physics>
         <Environment blur={0.75}>
           <Lightformer
@@ -98,9 +100,10 @@ export default function Lanyard({
 interface BandProps {
   maxSpeed?: number;
   minSpeed?: number;
+  setInvert?: (invert: boolean) => void;
 }
 
-function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
+function Band({ maxSpeed = 50, minSpeed = 0, setInvert }: BandProps) {
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
@@ -229,7 +232,6 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   return (
     <>
       <group position={isSmall ? [0, 7, 0] : [-2.5, 4, 0]}>
-        {" "}
         <RigidBody
           ref={fixed}
           {...segmentProps}
@@ -273,8 +275,14 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
           <group
             scale={2.25}
             position={[0, -1.2, -0.05]}
-            onPointerOver={() => hover(true)}
-            onPointerOut={() => hover(false)}
+            onPointerOver={() => {
+              hover(true);
+              setInvert && setInvert(true);
+            }}
+            onPointerOut={() => {
+              hover(false);
+              setInvert && setInvert(false);
+            }}
             onPointerUp={(e: any) => {
               e.target.releasePointerCapture(e.pointerId);
               drag(false);
