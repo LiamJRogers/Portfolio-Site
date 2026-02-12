@@ -291,10 +291,13 @@ const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
         style={{ borderTop: isFirst ? "none" : `1px solid ${borderColor}` }}
       >
         <a
-          className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-semibold text-[4vh]"
+          className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-semibold text-5xl"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          style={{ color: textColor }}
+          style={{
+            color: textColor,
+            fontFamily: "'Koulen', sans-serif",
+          }}
           tabIndex={0}
         >
           {text}
@@ -312,7 +315,10 @@ const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
                   key={`${idx}-${subIdx}`}
                   style={{ color: marqueeTextColor }}
                 >
-                  <span className="whitespace-nowrap uppercase font-normal text-[4vh] leading-none px-[1vw]">
+                  <span
+                    className="whitespace-nowrap uppercase font-normal text-[4vh] leading-none px-[1vw]"
+                    style={{ fontFamily: "'Koulen', sans-serif" }}
+                  >
                     {part.text}
                   </span>
                   <div

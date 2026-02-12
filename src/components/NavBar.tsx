@@ -25,7 +25,12 @@ const NavBar = () => {
 
   return (
     <header className="w-full flex items-center justify-between px-6 py-6 z-60 relative bg-white">
-      <div className="font-bold text-xl">LJR</div>
+      <div
+        className="font-bold text-3xl ml-2"
+        style={{ fontFamily: "'Koulen', sans-serif" }}
+      >
+        LJR
+      </div>
       {/* Desktop nav */}
       <nav className="hidden md:flex items-center h-10 px-22">
         {navLinks.map((link) =>
@@ -33,9 +38,10 @@ const NavBar = () => {
             <div key={link.href} className="flex">
               <a
                 href={link.href}
-                className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-lg transition flex items-center ${contactHovered ? "quick-flip-hover" : ""}`}
+                className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-2xl transition flex items-center font-sans ${contactHovered ? "quick-flip-hover" : ""}`}
                 onMouseEnter={() => setContactHovered(true)}
                 onMouseLeave={() => setContactHovered(false)}
+                style={{ fontFamily: "'Koulen', sans-serif" }}
               >
                 <span>{link.label}</span>
               </a>
@@ -53,7 +59,8 @@ const NavBar = () => {
             <a
               key={link.href}
               href={link.href}
-              className="quick-flip text-black text-lg flex items-center h-full mr-8 last:mr-0"
+              className="quick-flip text-black text-2xl flex items-center h-full mr-8 last:mr-0 font-sans"
+              style={{ fontFamily: "'Koulen', sans-serif" }}
             >
               <span>{link.label}</span>
             </a>

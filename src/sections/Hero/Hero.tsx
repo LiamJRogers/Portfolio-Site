@@ -30,11 +30,12 @@ const Hero = () => {
         style={{
           writingMode: "vertical-rl",
           transform: "rotate(180deg)",
+          fontFamily: "'Hind Vadodara', sans-serif",
         }}
       >
         Liam Jack Rogers
       </span>
-      <div className="flex flex-col items-center text-center px-4 md:px-0 w-full max-w-5xl mx-auto pt-16 md:pt-32">
+      <div className="flex flex-col items-center text-center px-4 md:px-0 w-full max-w-5xl mx-auto pt-16 md:pt-40">
         <span
           className="text-3xl md:text-4xl mb-4 text-gray-600"
           style={{ fontFamily: "'Herr Von Muellerhoff', cursive" }}
@@ -47,6 +48,12 @@ const Hero = () => {
         >
           Full Stack <br /> Software Engineer
         </h1>
+        <span
+          className="mt-4 text-lg text-gray-700"
+          style={{ fontFamily: "'Hind Vadodara', sans-serif" }}
+        >
+          53.4084° N, 2.9916° W
+        </span>
       </div>
       <a
         href="#next-section"

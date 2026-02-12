@@ -17,8 +17,11 @@ function Technologies({
         setInvert(false);
       }}
     >
-      <h2 className="mb-8 px-4 text-5xl font-bold tracking-wide leading-tight">
-        Technologies
+      <h2
+        className="text-6xl md:text-7xl font-bold mb-6 text-black p-12 text-center md:text-left"
+        style={{ fontFamily: "'Koulen', sans-serif" }}
+      >
+        Tools of the Trade
       </h2>
       <div
         className="h-150 relative"

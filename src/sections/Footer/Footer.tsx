@@ -22,10 +22,16 @@ const Footer = ({
         style={{ minHeight: "100vh" }}
       >
         <div className="flex-2 flex flex-col items-start px-6 md:pl-32 md:pr-0 mb-12 md:mb-0 w-full pt-12 md:pt-0">
-          <h2 className="text-6xl md:text-7xl font-extrabold text-gray-900 mb-6">
-            Get in touch{" "}
+          <h2
+            className="text-6xl md:text-7xl font-extrabold text-gray-900 mb-6"
+            style={{ fontFamily: "'Koulen', cursive" }}
+          >
+            Get in touch
           </h2>
-          <p className="text-lg text-gray-600 mb-8 pl-1">
+          <p
+            className="text-xl text-gray-600 mb-8 pl-1"
+            style={{ fontFamily: "'Hind Vadodara', sans-serif" }}
+          >
             Feel free to reach out — I’m always happy to chat about code,
             projects, or ideas.
           </p>
@@ -38,7 +44,8 @@ const Footer = ({
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="quick-flip text-gray-600 text-lg flex items-center h-full transition hover:text-gray-700"
+                    className="quick-flip text-gray-600 text-xl flex items-center h-full transition hover:text-gray-700"
+                    style={{ fontFamily: "'Hind Vadodara', sans-serif" }}
                   >
                     <span>{social.name}</span>
                   </a>
@@ -51,6 +58,7 @@ const Footer = ({
                 className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-lg transition flex items-center ${emailHovered ? "quick-flip-hover" : ""}`}
                 onMouseEnter={() => setEmailHovered(true)}
                 onMouseLeave={() => setEmailHovered(false)}
+                style={{ fontFamily: "'Hind Vadodara', sans-serif" }}
               >
                 <span>Drop me an email</span>
               </a>
@@ -67,12 +75,18 @@ const Footer = ({
           </div>
         </div>
         <div className="flex-3 flex flex-col items-center justify-center px-6 md:pr-12 w-full">
-          <span className="mb-6 text-xl font-semibold text-gray-800">
+          <span
+            className="mb-6 text-xl font-semibold text-gray-800"
+            style={{ fontFamily: "'Nothing You Could Do', cursive" }}
+          >
             Currently on repeat:
           </span>
           <VinylPlayer setInvert={setInvert} />
         </div>
-        <div className="w-full mt-8 pb-6 md:pb-0 text-center text-xs text-gray-500 md:absolute md:left-4 md:bottom-4 md:w-auto md:mt-0 md:text-left">
+        <div
+          className="w-full mt-8 pb-6 md:pb-0 text-center text-xs text-gray-500 md:absolute md:left-4 md:bottom-4 md:w-auto md:mt-0 md:text-left"
+          style={{ fontFamily: "'Nothing You Could Do', cursive" }}
+        >
           © {new Date().getFullYear()} Liam Jack Rogers.
           <br className="md:hidden" /> All rights reserved.
         </div>

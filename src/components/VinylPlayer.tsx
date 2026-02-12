@@ -219,7 +219,10 @@ export default function VinylPlayer({
           </div>
         </motion.div>
       </div>
-      <span className="text-xs text-gray-500 mt-4 text-center w-full">
+      <span
+        className="text-xs text-gray-500 mt-4 text-center w-full"
+        style={{ fontFamily: "'Nothing You Could Do', cursive" }}
+      >
         Music preview and artwork courtesy of{" "}
         <a
           href={trackUrl || "https://music.apple.com/"}

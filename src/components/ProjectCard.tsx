@@ -51,6 +51,7 @@ const ProjectCard = ({
               opacity-0 group-hover:opacity-100 transition-opacity duration-300
               hidden md:inline
             "
+            style={{ fontFamily: "'Nothing You Could Do', cursive" }}
           >
             {project.title}
           </span>
@@ -78,7 +79,10 @@ const ProjectCard = ({
           aria-label={`View ${project.title} on GitHub`}
         />
       </div>
-      <div className="mt-2 ml-2 text-2xl font-bold text-gray-900 md:hidden">
+      <div
+        className="mt-4 ml-2 text-4xl font-bold text-gray-900 md:hidden"
+        style={{ fontFamily: "'Koulen', sans-serif" }}
+      >
         {project.title}
       </div>
     </>

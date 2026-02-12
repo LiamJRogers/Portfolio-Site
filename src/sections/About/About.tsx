@@ -21,7 +21,7 @@ const About = ({
   setInvert: (invert: boolean) => void;
 }) => {
   const isMobile = useIsMobile();
-  const lanyardFov = isMobile ? 30 : 15;
+  const lanyardFov = isMobile ? 23 : 15;
 
   const birthYear = 2003;
   const birthMonth = 3;
@@ -51,13 +51,19 @@ const About = ({
       </div>
       <div className="hidden md:block flex-1" />
       <div
-        className="flex-1 max-w-2xl w-full text-left md:text-left relative z-20 flex flex-col justify-center items-start pr-0 md:pr-34 pt-8 md:pt-0"
-        style={{ background: "transparent" }}
+        className="flex-1 max-w-2xl w-full text-left md:text-left relative z-20 flex flex-col justify-center items-start pr-0 md:pr-28 pt-8 md:pt-0"
+        style={{
+          background: "transparent",
+          fontFamily: "'Hind Vadodara', sans-serif",
+        }}
       >
-        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
+        <h2
+          className="text-6xl md:text-7xl font-bold mb-6 text-black"
+          style={{ fontFamily: "'Nothing You Could Do', sans-serif" }}
+        >
           About Me
         </h2>
-        <p className="text-lg md:text-xl text-gray-700 mb-4">
+        <p className="text-lg md:text-2xl text-gray-700 mb-4">
           My name is Liam Jack Rogers, a {age}-year-old Software Engineer with a
           Bachelor of Science (Hons) in Software Engineering from{" "}
           <a
@@ -65,12 +71,13 @@ const About = ({
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-700 underline hover:text-gray-800 transition"
+            style={{ fontFamily: "'Koulen', sans-serif" }}
           >
             Liverpool John Moores University
           </a>
           .
         </p>
-        <p className="text-lg md:text-xl text-gray-700">
+        <p className="text-lg md:text-2xl text-gray-700">
           I'm currently working full-time, building and maintaining software
           solutions that solve real-world problems. When I’m not working, you’ll
           find me coding just for the joy of it, trying out the latest tools, or

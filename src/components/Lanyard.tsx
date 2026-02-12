@@ -231,7 +231,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, setInvert }: BandProps) {
 
   return (
     <>
-      <group position={isSmall ? [0, 7, 0] : [-2.5, 4, 0]}>
+      <group position={isSmall ? [0, 6.5, 0] : [-2.5, 4, 0]}>
         <RigidBody
           ref={fixed}
           {...segmentProps}

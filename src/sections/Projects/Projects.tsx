@@ -17,7 +17,12 @@ const Projects = ({
       setCardHover(false);
     }}
   >
-    <h2 className="text-4xl font-bold mb-8 px-4">Projects</h2>
+    <h2
+      className="text-6xl md:text-7xl font-bold mb-8 p-4 md:p-8 text-center"
+      style={{ fontFamily: "'Nothing You Could Do', cursive" }}
+    >
+      Project Highlights
+    </h2>
     <div className="flex flex-col w-full gap-y-8 md:hidden">
       {projects.map((project, idx) => (
         <div key={idx}>
