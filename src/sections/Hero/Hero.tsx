@@ -2,6 +2,8 @@ import React from "react";
 import NavBar from "../../components/NavBar";
 import VerticalSocialBar from "../../components/VerticalSocialBar";
 import SplashCursor from "../../components/SplashCursor";
+import { motion } from "motion/react";
+import TextReveal from "../../components/TextReveal";
 
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = React.useState(
@@ -25,35 +27,53 @@ const Hero = () => {
       {isDesktop && (
         <SplashCursor className="pointer-events-none absolute inset-0 z-0" />
       )}
-      <span
+      <motion.span
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        viewport={{ once: true, amount: 0.5 }}
         className="hidden md:block absolute top-1/2 right-8 -translate-y-1/2 text-gray-600 text-lg tracking-widest"
         style={{
           writingMode: "vertical-rl",
-          transform: "rotate(180deg)",
           fontFamily: "'Hind Vadodara', sans-serif",
         }}
       >
         Liam Jack Rogers
-      </span>
+      </motion.span>
       <div className="flex flex-col items-center text-center px-4 md:px-0 w-full max-w-5xl mx-auto pt-16 md:pt-40">
         <span
           className="text-3xl md:text-4xl mb-4 text-gray-600"
           style={{ fontFamily: "'Herr Von Muellerhoff', cursive" }}
         >
-          Hi, I'm Liam.
+          {Array.from("Hi, I'm Liam.").map((char, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.04 * i }}
+              viewport={{ once: true, amount: 0.5 }}
+              style={{ display: "inline-block" }}
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+          ))}
         </span>
-        <h1
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          viewport={{ once: true, amount: 0.5 }}
           className="text-6xl md:text-8xl font-bold text-black"
           style={{ fontFamily: "'Koulen', sans-serif" }}
         >
-          Full Stack <br /> Software Engineer
-        </h1>
-        <span
-          className="mt-4 text-lg text-gray-700"
-          style={{ fontFamily: "'Hind Vadodara', sans-serif" }}
-        >
-          53.4084° N, 2.9916° W
-        </span>
+          Full Stack <br />
+          Software Engineer
+        </motion.h1>
+        <TextReveal
+          text="53.4084° N, 2.9916° W"
+          revealText="Liverpool, England"
+          className="mt-4 text-gray-700"
+        />
       </div>
       <a
         href="#next-section"

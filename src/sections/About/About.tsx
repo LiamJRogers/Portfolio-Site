@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Lanyard from "../../components/Lanyard";
+import { motion } from "motion/react";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -31,6 +32,14 @@ const About = ({
     age -= 1;
   }
 
+  const before = `My name is Liam Jack Rogers, a ${age}-year-old Software Engineer with a Bachelor of Science (Hons) in Software Engineering from `;
+  const link = "Liverpool John Moores University";
+  const after = ".";
+
+  const fullText = before + link + after;
+  const linkStart = before.length;
+  const linkEnd = before.length + link.length;
+
   return (
     <section
       id="about"
@@ -57,32 +66,53 @@ const About = ({
           fontFamily: "'Hind Vadodara', sans-serif",
         }}
       >
-        <h2
+        <motion.h2
           className="text-6xl md:text-7xl font-bold mb-6 text-black"
           style={{ fontFamily: "'Nothing You Could Do', sans-serif" }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.5 }}
         >
           About Me
-        </h2>
-        <p className="text-lg md:text-2xl text-gray-700 mb-4">
-          My name is Liam Jack Rogers, a {age}-year-old Software Engineer with a
-          Bachelor of Science (Hons) in Software Engineering from{" "}
-          <a
-            href="https://www.ljmu.ac.uk/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-700 underline hover:text-gray-800 transition"
-            style={{ fontFamily: "'Koulen', sans-serif" }}
-          >
-            Liverpool John Moores University
-          </a>
-          .
-        </p>
-        <p className="text-lg md:text-2xl text-gray-700">
-          I'm currently working full-time, building and maintaining software
-          solutions that solve real-world problems. When I’m not working, you’ll
-          find me coding just for the joy of it, trying out the latest tools, or
-          building projects that challenge and inspire me.
-        </p>
+        </motion.h2>
+        <div
+          className="text-lg md:text-2xl text-gray-700 mb-4"
+          style={{ whiteSpace: "pre-wrap" }}
+        >
+          {Array.from(fullText).map((char, i) =>
+            i >= linkStart && i < linkEnd ? (
+              <motion.a
+                key={i}
+                href="https://www.ljmu.ac.uk/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 underline hover:text-gray-800 transition"
+                style={{
+                  fontFamily: "'Koulen', sans-serif",
+                  display: "inline",
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.01 * i, duration: 0.2 }}
+                viewport={{ once: true, amount: 0.5 }}
+              >
+                {char}
+              </motion.a>
+            ) : (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.01 * i, duration: 0.2 }}
+                style={{ display: "inline-block" }}
+                viewport={{ once: true, amount: 0.5 }}
+              >
+                {char}
+              </motion.span>
+            ),
+          )}
+        </div>
       </div>
     </section>
   );
