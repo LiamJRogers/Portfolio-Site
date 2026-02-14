@@ -32,14 +32,6 @@ const About = ({
     age -= 1;
   }
 
-  const before = `My name is Liam Jack Rogers, a ${age}-year-old Software Engineer with a Bachelor of Science (Hons) in Software Engineering from `;
-  const link = "Liverpool John Moores University";
-  const after = ".";
-
-  const fullText = before + link + after;
-  const linkStart = before.length;
-  const linkEnd = before.length + link.length;
-
   return (
     <section
       id="about"
@@ -76,43 +68,27 @@ const About = ({
         >
           About Me
         </motion.h2>
-        <div
+        <motion.p
           className="text-lg md:text-2xl text-gray-700 mb-4"
-          style={{ whiteSpace: "pre-wrap" }}
+          style={{ fontFamily: "'Hind Vadodara', sans-serif" }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          viewport={{ once: true, amount: 0.5 }}
         >
-          {Array.from(fullText).map((char, i) =>
-            i >= linkStart && i < linkEnd ? (
-              <motion.a
-                key={i}
-                href="https://www.ljmu.ac.uk/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-700 underline hover:text-gray-800 transition"
-                style={{
-                  fontFamily: "'Koulen', sans-serif",
-                  display: "inline",
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.01 * i, duration: 0.2 }}
-                viewport={{ once: true, amount: 0.5 }}
-              >
-                {char}
-              </motion.a>
-            ) : (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.01 * i, duration: 0.2 }}
-                style={{ display: "inline-block" }}
-                viewport={{ once: true, amount: 0.5 }}
-              >
-                {char}
-              </motion.span>
-            ),
-          )}
-        </div>
+          My name is Liam Jack Rogers, a {age}-year-old Software Engineer with a
+          Bachelor of Science (Hons) in Software Engineering from{" "}
+          <a
+            href="https://www.ljmu.ac.uk/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-700 underline hover:text-gray-800 transition"
+            style={{ fontFamily: "'Koulen', sans-serif" }}
+          >
+            Liverpool John Moores University
+          </a>
+          .
+        </motion.p>
       </div>
     </section>
   );
