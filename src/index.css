@@ -153,3 +153,13 @@
   transform: translateY(-2lh);
   translate: 0 2lh;
 }
+
+#smooth-wrapper {
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+#smooth-content {
+  will-change: transform;
+}
