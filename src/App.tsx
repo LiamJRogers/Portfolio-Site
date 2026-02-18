@@ -17,6 +17,11 @@ function App() {
   const [invert, setInvert] = useState(false);
   const smootherRef = useRef<any>(null);
 
+  const heroRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const projectsRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!smootherRef.current) {
       smootherRef.current = ScrollSmoother.create({
@@ -27,11 +32,57 @@ function App() {
         normalizeScroll: true,
       });
     }
+
+    let heroTrigger: ScrollTrigger | undefined;
+    let heroOpacityTween: gsap.core.Tween | undefined;
+    let footerUncoverTimeline: gsap.core.Timeline | undefined;
+
+    if (heroRef.current && aboutRef.current) {
+      heroTrigger = ScrollTrigger.create({
+        trigger: heroRef.current,
+        start: "top top",
+        endTrigger: aboutRef.current,
+        end: "bottom top",
+        pin: true,
+        pinSpacing: false,
+        scrub: true,
+      });
+
+      heroOpacityTween = gsap.to(heroRef.current, {
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: aboutRef.current,
+          start: "top 80%",
+          end: "top 40%",
+          scrub: true,
+        },
+      });
+    }
+
+    if (footerRef.current && projectsRef.current) {
+      gsap.set(footerRef.current, { yPercent: -50 });
+
+      footerUncoverTimeline = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: projectsRef.current,
+            start: "bottom bottom",
+            end: "+=75%",
+            scrub: true,
+          },
+        })
+        .to(footerRef.current, { yPercent: 0, ease: "none" });
+    }
+
     return () => {
       if (smootherRef.current) {
         smootherRef.current.kill();
         smootherRef.current = null;
       }
+      if (heroTrigger) heroTrigger.kill();
+      if (heroOpacityTween) heroOpacityTween.kill();
+      if (footerUncoverTimeline) footerUncoverTimeline.kill();
     };
   }, []);
 
@@ -44,17 +95,25 @@ function App() {
       />
       <div id="smooth-content">
         <main>
-          <Hero />
-          <About setCursorActive={setCursorActive} setInvert={setInvert} />
+          <div ref={heroRef}>
+            <Hero />
+          </div>
+          <div ref={aboutRef}>
+            <About setCursorActive={setCursorActive} setInvert={setInvert} />
+          </div>
           <Technologies
             setCursorActive={setCursorActive}
             setInvert={setInvert}
           />
-          <Projects
-            setCursorActive={setCursorActive}
-            setCardHover={setCardHover}
-          />
-          <Footer setCursorActive={setCursorActive} setInvert={setInvert} />
+          <div ref={projectsRef} style={{ zIndex: 2, position: "relative" }}>
+            <Projects
+              setCursorActive={setCursorActive}
+              setCardHover={setCardHover}
+            />
+          </div>
+          <div ref={footerRef} style={{ zIndex: 1, position: "relative" }}>
+            <Footer setCursorActive={setCursorActive} setInvert={setInvert} />
+          </div>
         </main>
       </div>
     </div>

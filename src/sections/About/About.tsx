@@ -35,7 +35,8 @@ const About = ({
   return (
     <section
       id="about"
-      className="min-h-screen flex flex-col md:flex-row items-stretch justify-end px-6 md:px-0 bg-gray-50 relative"
+      className="min-h-screen flex flex-col md:flex-row items-stretch justify-end px-6 md:px-0 relative rounded-t-4xl"
+      style={{ background: "#1E1E1E" }}
       onMouseEnter={() => setCursorActive(true)}
       onMouseLeave={() => {
         setCursorActive(false);
@@ -59,7 +60,7 @@ const About = ({
         }}
       >
         <motion.h2
-          className="text-6xl md:text-7xl font-bold mb-6 text-black"
+          className="text-6xl md:text-7xl font-bold mb-6 text-white"
           style={{ fontFamily: "'Nothing You Could Do', sans-serif" }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -69,7 +70,7 @@ const About = ({
           About Me
         </motion.h2>
         <motion.p
-          className="text-lg md:text-2xl text-gray-700 mb-4"
+          className="text-lg md:text-2xl text-white mb-4"
           style={{ fontFamily: "'Hind Vadodara', sans-serif" }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -82,7 +83,7 @@ const About = ({
             href="https://www.ljmu.ac.uk/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-700 underline hover:text-gray-800 transition"
+            className="text-white underline hover:text-gray-200 transition"
             style={{ fontFamily: "'Koulen', sans-serif" }}
           >
             Liverpool John Moores University

@@ -11,7 +11,8 @@ const Projects = ({
 }) => (
   <section
     id="projects"
-    className="py-16 bg-white px-4 md:px-8"
+    className="py-16 px-4 md:px-8 rounded-b-4xl"
+    style={{ background: "#1E1E1E" }}
     onMouseEnter={() => setCursorActive(true)}
     onMouseLeave={() => {
       setCursorActive(false);
@@ -19,7 +20,7 @@ const Projects = ({
     }}
   >
     <motion.h2
-      className="text-6xl md:text-7xl font-bold mb-8 p-4 md:p-8 text-center"
+      className="text-6xl md:text-7xl font-bold mb-8 p-4 md:p-8 text-center text-white "
       style={{ fontFamily: "'Nothing You Could Do', cursive" }}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}

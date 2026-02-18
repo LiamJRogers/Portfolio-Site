@@ -1,7 +1,7 @@
-import powneyImg from "../assets/powneys.png";
-import finalImg from "../assets/finalyear.png";
-import appImg from "../assets/tvtracker.png";
-import soonImg from "../assets/comingsoon.png";
+import powneyImg from "../assets/powneys.webp";
+import finalImg from "../assets/finalyear.webp";
+import appImg from "../assets/tvtracker.webp";
+import soonImg from "../assets/comingsoon.webp";
 
 export const projects = [
   {

@@ -14,10 +14,10 @@ const Footer = ({
   const [emailHovered, setEmailHovered] = React.useState(false);
 
   return (
-    <div className="min-h-screen w-full bg-white flex items-center">
+    <div className="min-h-screen w-full flex items-center">
       <section
         id="footer"
-        className="relative w-full h-full border-28 border-gray-200 flex flex-col md:flex-row items-center"
+        className="relative w-full h-full border-28 border-white bg-white flex flex-col md:flex-row items-center"
         onMouseEnter={() => setCursorActive(true)}
         onMouseLeave={() => setCursorActive(false)}
         style={{ minHeight: "100vh" }}

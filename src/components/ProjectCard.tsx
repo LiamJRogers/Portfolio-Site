@@ -80,7 +80,7 @@ const ProjectCard = ({
         />
       </div>
       <div
-        className="mt-4 ml-2 text-4xl font-bold text-gray-900 md:hidden"
+        className="mt-4 ml-2 text-4xl font-bold text-white md:hidden"
         style={{ fontFamily: "'Koulen', sans-serif" }}
       >
         {project.title}

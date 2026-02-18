@@ -11,7 +11,7 @@ function Technologies({
 }) {
   return (
     <section
-      className="relative py-8"
+      className="relative py-8 bg-white"
       onMouseEnter={() => setCursorActive(true)}
       onMouseLeave={() => {
         setCursorActive(false);
