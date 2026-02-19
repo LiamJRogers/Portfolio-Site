@@ -5,18 +5,24 @@ import { motion } from "motion/react";
 const Projects = ({
   setCursorActive,
   setCardHover,
+  setInvert,
 }: {
   setCursorActive: (active: boolean) => void;
   setCardHover: (hover: boolean) => void;
+  setInvert: (invert: boolean) => void;
 }) => (
   <section
     id="projects"
     className="py-16 px-4 md:px-8 rounded-b-4xl"
     style={{ background: "#1E1E1E" }}
-    onMouseEnter={() => setCursorActive(true)}
+    onMouseEnter={() => {
+      setCursorActive(true);
+      setInvert(true);
+    }}
     onMouseLeave={() => {
       setCursorActive(false);
       setCardHover(false);
+      setInvert(false);
     }}
   >
     <motion.h2

@@ -16,11 +16,12 @@ function App() {
   const [cursorActive, setCursorActive] = useState(false);
   const [cardHover, setCardHover] = useState(false);
   const [invert, setInvert] = useState(false);
-  const [loading, setLoading] = useState(true); // <-- Add loading state
+  const [loading, setLoading] = useState(true);
   const smootherRef = useRef<any>(null);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
+  const technologiesRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
 
@@ -29,10 +30,12 @@ function App() {
       smootherRef.current = ScrollSmoother.create({
         wrapper: "#smooth-wrapper",
         content: "#smooth-content",
-        smooth: 3,
+        smooth: 6,
         effects: true,
         normalizeScroll: true,
       });
+      // expose for other components to use reliably
+      (window as any)._smoother = smootherRef.current;
     }
 
     let heroTrigger: ScrollTrigger | undefined;
@@ -81,6 +84,10 @@ function App() {
       if (smootherRef.current) {
         smootherRef.current.kill();
         smootherRef.current = null;
+        // cleanup exposed reference
+        try {
+          delete (window as any)._smoother;
+        } catch {}
       }
       if (heroTrigger) heroTrigger.kill();
       if (heroOpacityTween) heroOpacityTween.kill();
@@ -100,29 +107,37 @@ function App() {
           />
           <div id="smooth-content">
             <main>
-              <div ref={heroRef}>
+              <div id="hero" ref={heroRef}>
                 <Hero />
               </div>
-              <div ref={aboutRef}>
+              <div id="about" ref={aboutRef}>
                 <About
                   setCursorActive={setCursorActive}
                   setInvert={setInvert}
                 />
               </div>
-              <Technologies
-                setCursorActive={setCursorActive}
-                setInvert={setInvert}
-              />
+              <div id="technologies" ref={technologiesRef}>
+                <Technologies
+                  setCursorActive={setCursorActive}
+                  setInvert={setInvert}
+                />
+              </div>
               <div
+                id="projects"
                 ref={projectsRef}
                 style={{ zIndex: 2, position: "relative" }}
               >
                 <Projects
                   setCursorActive={setCursorActive}
                   setCardHover={setCardHover}
+                  setInvert={setInvert}
                 />
               </div>
-              <div ref={footerRef} style={{ zIndex: 1, position: "relative" }}>
+              <div
+                id="contact"
+                ref={footerRef}
+                style={{ zIndex: 1, position: "relative" }}
+              >
                 <Footer
                   setCursorActive={setCursorActive}
                   setInvert={setInvert}

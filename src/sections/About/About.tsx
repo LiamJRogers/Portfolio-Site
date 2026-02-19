@@ -37,7 +37,10 @@ const About = ({
       id="about"
       className="min-h-screen flex flex-col md:flex-row items-stretch justify-end px-6 md:px-0 relative rounded-t-4xl"
       style={{ background: "#1E1E1E" }}
-      onMouseEnter={() => setCursorActive(true)}
+      onMouseEnter={() => {
+        setCursorActive(true);
+        setInvert(true);
+      }}
       onMouseLeave={() => {
         setCursorActive(false);
         setInvert(false);

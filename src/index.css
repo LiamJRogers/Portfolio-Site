@@ -141,10 +141,6 @@
   transform: translateY(-2lh);
   translate: 0 2lh;
 }
-.quick-flip:focus-within {
-  outline: 2px solid teal;
-  border-radius: 4px;
-}
 .quick-flip > *:focus {
   outline: none;
 }
@@ -162,4 +158,23 @@
 }
 #smooth-content {
   will-change: transform;
+}
+
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+a:focus {
+  outline: none;
+}
+
+a:focus-visible {
+  outline: 2px solid gray;
+  outline-offset: 2px;
+  border-radius: 4px;
 }

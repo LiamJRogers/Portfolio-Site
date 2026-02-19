@@ -277,11 +277,11 @@ function Band({ maxSpeed = 50, minSpeed = 0, setInvert }: BandProps) {
             position={[0, -1.2, -0.05]}
             onPointerOver={() => {
               hover(true);
-              setInvert && setInvert(true);
+              setInvert && setInvert(false);
             }}
             onPointerOut={() => {
               hover(false);
-              setInvert && setInvert(false);
+              setInvert && setInvert(true);
             }}
             onPointerUp={(e: any) => {
               e.target.releasePointerCapture(e.pointerId);

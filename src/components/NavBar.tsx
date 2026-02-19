@@ -4,6 +4,7 @@ import StaggeredMenu from "./StaggeredMenu";
 
 const navLinks = [
   { label: "About", href: "#about" },
+  { label: "Technologies", href: "#technologies" },
   { label: "Projects", href: "#projects" },
   { label: "Contact", href: "#contact" },
 ];
@@ -23,6 +24,32 @@ const socialItems = [
 const NavBar = () => {
   const [contactHovered, setContactHovered] = React.useState(false);
 
+  const handleNavClick = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    const id = href.replace("#", "");
+    const selector = `#${id}`;
+
+    const smoother =
+      (window as any)._smoother ||
+      ((window as any).ScrollSmoother &&
+        typeof (window as any).ScrollSmoother.get === "function" &&
+        (window as any).ScrollSmoother.get()) ||
+      null;
+
+    if (smoother) {
+      try {
+        smoother.scrollTo(selector, true, "top");
+        setTimeout(() => (window as any).ScrollTrigger?.update?.(), 50);
+      } catch {
+        const section = document.getElementById(id);
+        if (section) section.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      const section = document.getElementById(id);
+      if (section) section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <header className="w-full flex items-center justify-between px-6 py-6 z-60 relative bg-white">
       <div
@@ -38,6 +65,7 @@ const NavBar = () => {
             <div key={link.href} className="flex">
               <a
                 href={link.href}
+                onClick={handleNavClick(link.href)}
                 className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-2xl transition flex items-center font-sans ${contactHovered ? "quick-flip-hover" : ""}`}
                 onMouseEnter={() => setContactHovered(true)}
                 onMouseLeave={() => setContactHovered(false)}
@@ -59,6 +87,7 @@ const NavBar = () => {
             <a
               key={link.href}
               href={link.href}
+              onClick={handleNavClick(link.href)}
               className="quick-flip text-black text-2xl flex items-center h-full mr-8 last:mr-0 font-sans"
               style={{ fontFamily: "'Koulen', sans-serif" }}
             >
