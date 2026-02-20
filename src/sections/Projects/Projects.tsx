@@ -37,20 +37,14 @@ const Projects = ({
     </motion.h2>
     <div className="flex flex-col w-full gap-y-8 md:hidden">
       {projects.map((project, idx) => (
-        <motion.div
-          key={idx}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.1 * idx }}
-          viewport={{ once: true, amount: 0.3 }}
-        >
+        <div key={idx}>
           <ProjectCard
             project={project}
             showTitleBelow={true}
             onCardHover={setCardHover}
             size="full"
           />
-        </motion.div>
+        </div>
       ))}
     </div>
     <div className="hidden md:flex flex-col w-full gap-y-4">
@@ -59,64 +53,40 @@ const Projects = ({
           <div key={idx} className="flex flex-row w-full gap-x-4">
             {idx % 4 === 0 ? (
               <>
-                <motion.div
-                  className="flex-1"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1.2, delay: 0.1 * idx }}
-                  viewport={{ once: true, amount: 0.3 }}
-                >
+                <div className="flex-1">
                   <ProjectCard
                     project={project}
                     onCardHover={setCardHover}
                     size="large"
                   />
-                </motion.div>
+                </div>
                 {projects[idx + 1] && (
-                  <motion.div
-                    className="shrink-0 grow-0 w-[40%]"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2, delay: 0.1 * (idx + 1) }}
-                    viewport={{ once: true, amount: 0.3 }}
-                  >
+                  <div className="shrink-0 grow-0 w-[40%]">
                     <ProjectCard
                       project={projects[idx + 1]}
                       onCardHover={setCardHover}
                       size="small"
                     />
-                  </motion.div>
+                  </div>
                 )}
               </>
             ) : (
               <>
-                <motion.div
-                  className="shrink-0 grow-0 w-[40%]"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1.2, delay: 0.1 * idx }}
-                  viewport={{ once: true, amount: 0.3 }}
-                >
+                <div className="shrink-0 grow-0 w-[40%]">
                   <ProjectCard
                     project={project}
                     onCardHover={setCardHover}
                     size="small"
                   />
-                </motion.div>
+                </div>
                 {projects[idx + 1] && (
-                  <motion.div
-                    className="flex-1"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2, delay: 0.1 * (idx + 1) }}
-                    viewport={{ once: true, amount: 0.3 }}
-                  >
+                  <div className="flex-1">
                     <ProjectCard
                       project={projects[idx + 1]}
                       onCardHover={setCardHover}
                       size="large"
                     />
-                  </motion.div>
+                  </div>
                 )}
               </>
             )}

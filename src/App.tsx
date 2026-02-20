@@ -9,6 +9,7 @@ import Footer from "./sections/Footer/Footer";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import ScrollSmoother from "gsap/ScrollSmoother";
+import { projects } from "./data/projects";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -26,6 +27,14 @@ function App() {
   const footerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    projects.forEach((project) => {
+      if (!project.image) return;
+      const img = new window.Image();
+      img.src = project.image;
+    });
+  }, []);
+
+  useEffect(() => {
     if (!loading && !smootherRef.current) {
       smootherRef.current = ScrollSmoother.create({
         wrapper: "#smooth-wrapper",
@@ -34,7 +43,6 @@ function App() {
         effects: true,
         normalizeScroll: true,
       });
-      // expose for other components to use reliably
       (window as any)._smoother = smootherRef.current;
     }
 
@@ -84,7 +92,6 @@ function App() {
       if (smootherRef.current) {
         smootherRef.current.kill();
         smootherRef.current = null;
-        // cleanup exposed reference
         try {
           delete (window as any)._smoother;
         } catch {}
