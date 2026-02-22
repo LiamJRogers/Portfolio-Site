@@ -49,50 +49,64 @@ export default function Lanyard({
   transparent = true,
   setInvert,
 }: LanyardProps) {
+  const [dragActive, setDragActive] = useState(false);
+
   return (
-    <div className="relative z-0 w-full h-screen flex justify-center items-center transform scale-100 origin-center">
-      <Canvas
-        camera={{ position, fov }}
-        gl={{ alpha: transparent }}
-        onCreated={({ gl }) =>
-          gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)
-        }
-      >
-        <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={1 / 60}>
-          <Band setInvert={setInvert} />
-        </Physics>
-        <Environment blur={0.75}>
-          <Lightformer
-            intensity={2}
-            color="white"
-            position={[0, -1, 5]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={3}
-            color="white"
-            position={[-1, -1, 1]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={3}
-            color="white"
-            position={[1, 1, 1]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={10}
-            color="white"
-            position={[-10, 0, 14]}
-            rotation={[0, Math.PI / 2, Math.PI / 3]}
-            scale={[100, 10, 1]}
-          />
-        </Environment>
-      </Canvas>
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: dragActive ? 9999 : 0,
+        pointerEvents: "auto",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <div style={{ width: "100%", height: "100%", pointerEvents: "auto" }}>
+        <Canvas
+          style={{ width: "100%", height: "100%", position: "relative" }}
+          camera={{ position, fov }}
+          gl={{ alpha: transparent }}
+          onCreated={({ gl }) =>
+            gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)
+          }
+        >
+          <ambientLight intensity={Math.PI} />
+          <Physics gravity={gravity} timeStep={1 / 60}>
+            <Band setInvert={setInvert} onDragChange={setDragActive} />
+          </Physics>
+          <Environment blur={0.75}>
+            <Lightformer
+              intensity={2}
+              color="white"
+              position={[0, -1, 5]}
+              rotation={[0, 0, Math.PI / 3]}
+              scale={[100, 0.1, 1]}
+            />
+            <Lightformer
+              intensity={3}
+              color="white"
+              position={[-1, -1, 1]}
+              rotation={[0, 0, Math.PI / 3]}
+              scale={[100, 0.1, 1]}
+            />
+            <Lightformer
+              intensity={3}
+              color="white"
+              position={[1, 1, 1]}
+              rotation={[0, 0, Math.PI / 3]}
+              scale={[100, 0.1, 1]}
+            />
+            <Lightformer
+              intensity={6}
+              color="white"
+              position={[-10, 0, 14]}
+              rotation={[0, Math.PI / 2, Math.PI / 3]}
+              scale={[100, 10, 1]}
+            />
+          </Environment>
+        </Canvas>
+      </div>
     </div>
   );
 }
@@ -101,9 +115,15 @@ interface BandProps {
   maxSpeed?: number;
   minSpeed?: number;
   setInvert?: (invert: boolean) => void;
+  onDragChange?: (active: boolean) => void;
 }
 
-function Band({ maxSpeed = 50, minSpeed = 0, setInvert }: BandProps) {
+function Band({
+  maxSpeed = 50,
+  minSpeed = 0,
+  setInvert,
+  onDragChange,
+}: BandProps) {
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
@@ -231,7 +251,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, setInvert }: BandProps) {
 
   return (
     <>
-      <group position={isSmall ? [0, 6.5, 0] : [-2.5, 4, 0]}>
+      <group position={isSmall ? [0, 6.5, 0] : [-1.5, 4, 0]}>
         <RigidBody
           ref={fixed}
           {...segmentProps}
@@ -286,6 +306,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, setInvert }: BandProps) {
             onPointerUp={(e: any) => {
               e.target.releasePointerCapture(e.pointerId);
               drag(false);
+              onDragChange && onDragChange(false);
             }}
             onPointerDown={(e: any) => {
               e.target.setPointerCapture(e.pointerId);
@@ -294,6 +315,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, setInvert }: BandProps) {
                   .copy(e.point)
                   .sub(vec.copy(card.current.translation())),
               );
+              onDragChange && onDragChange(true);
             }}
           >
             <mesh geometry={nodes.card.geometry}>
