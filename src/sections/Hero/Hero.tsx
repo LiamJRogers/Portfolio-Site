@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "../../components/NavBar";
 import VerticalSocialBar from "../../components/VerticalSocialBar";
 import SplashCursor from "../../components/SplashCursor";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import TextReveal from "../../components/TextReveal";
 
 function useIsDesktop() {
@@ -19,12 +19,38 @@ function useIsDesktop() {
 
 const Hero = () => {
   const isDesktop = useIsDesktop();
+  const [cursorActive, setCursorActive] = React.useState(false);
+
+  const scrollToSection = (id: string) => {
+    const selector = `#${id}`;
+    const smoother =
+      (window as any)._smoother ||
+      ((window as any).ScrollSmoother &&
+        typeof (window as any).ScrollSmoother.get === "function" &&
+        (window as any).ScrollSmoother.get()) ||
+      null;
+
+    if (smoother && typeof smoother.scrollTo === "function") {
+      try {
+        smoother.scrollTo(selector, true, "top");
+        setTimeout(() => (window as any).ScrollTrigger?.update?.(), 50);
+        return;
+      } catch {}
+    }
+
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <section className="min-h-screen flex flex-col relative overflow-hidden">
+    <section
+      className="min-h-screen flex flex-col relative overflow-hidden"
+      onMouseEnter={() => setCursorActive(true)}
+      onMouseLeave={() => setCursorActive(false)}
+    >
       <NavBar />
       <VerticalSocialBar />
-      {isDesktop && (
+      {isDesktop && cursorActive && (
         <SplashCursor className="pointer-events-none absolute inset-0 z-0" />
       )}
       <motion.span
@@ -76,9 +102,13 @@ const Hero = () => {
         />
       </div>
       <a
-        href="#next-section"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
-        aria-label="Scroll down"
+        href="#about"
+        onClick={(e) => {
+          e.preventDefault();
+          scrollToSection("about");
+        }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer"
+        aria-label="Scroll to About"
       >
         <svg
           width="36"
@@ -86,10 +116,11 @@ const Hero = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2.5"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
           className="text-gray-600 animate-bounce"
+          style={{ animationDuration: "1.6s" }}
         >
           <line x1="12" y1="5" x2="12" y2="19" />
           <polyline points="19 12 12 19 5 12" />

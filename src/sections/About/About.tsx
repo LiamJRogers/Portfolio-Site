@@ -99,11 +99,11 @@ const About = ({
           </>
         )}
       </div>
-      <div className="flex-2 min-w-0 h-screen relative z-10 flex items-center justify-center">
+      <div className="flex-[1.5] min-w-0 h-screen relative z-10 flex items-center justify-center">
         <div className="w-full h-full invisible" aria-hidden="true" />
       </div>
       <div
-        className="flex-2 min-w-0 w-full text-left lg:text-left relative flex flex-col justify-start items-start pr-0 lg:pr-28 pt-8 lg:pt-0 z-10"
+        className="flex-[1.5] min-w-0 w-full text-left lg:text-left relative flex flex-col justify-start items-start pr-0 lg:pr-44 pt-8 lg:pt-0 z-10"
         style={{
           background: "transparent",
           fontFamily: "'Hind Vadodara', sans-serif",
@@ -129,15 +129,12 @@ const About = ({
         >
           My name is Liam Jack Rogers, a {age}-year-old Software Engineer with a
           Bachelor of Science (Hons) in Software Engineering from{" "}
-          <a
-            href="https://www.ljmu.ac.uk/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white underline hover:text-gray-200 transition"
+          <span
+            className="text-white underline"
             style={{ fontFamily: "'Koulen', sans-serif" }}
           >
             Liverpool John Moores University
-          </a>
+          </span>
           .
         </motion.p>
       </div>

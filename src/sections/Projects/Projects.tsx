@@ -1,6 +1,6 @@
 import ProjectCard from "../../components/ProjectCard";
 import { projects } from "../../data/projects";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 const Projects = ({
   setCursorActive,

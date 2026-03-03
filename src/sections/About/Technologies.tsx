@@ -1,6 +1,6 @@
 import FlowingMenu from "../../components/FlowingMenu";
 import { technologies } from "../../data/technologies";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 function Technologies({
   setCursorActive,
