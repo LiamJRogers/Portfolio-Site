@@ -2,18 +2,16 @@ import React from "react";
 import ArrowOutward from "@mui/icons-material/ArrowOutward";
 import StaggeredMenu from "./StaggeredMenu";
 
-const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Technologies", href: "#technologies" },
-  { label: "Projects", href: "#projects" },
-  { label: "Contact", href: "#contact" },
-];
-
-const menuItems = [
-  { label: "Home", ariaLabel: "Go to home page", link: "#" },
-  { label: "About", ariaLabel: "Learn about me", link: "#about" },
-  { label: "Projects", ariaLabel: "View my projects", link: "#projects" },
-  { label: "Contact", ariaLabel: "Get in touch", link: "#contact" },
+const NAV_LINKS = [
+  { label: "Home", href: "#", ariaLabel: "Go to home page" },
+  { label: "About", href: "#about", ariaLabel: "Learn about me" },
+  {
+    label: "Toolbox",
+    href: "#technologies",
+    ariaLabel: "See my technologies",
+  },
+  { label: "Projects", href: "#projects", ariaLabel: "View my projects" },
+  { label: "Contact", href: "#contact", ariaLabel: "Get in touch" },
 ];
 
 const socialItems = [
@@ -21,7 +19,13 @@ const socialItems = [
   { label: "LinkedIn", link: "https://linkedin.com/in/yourusername" },
 ];
 
-const NavBar = () => {
+const NavBar = ({
+  onMenuOpen,
+  onMenuClose,
+}: {
+  onMenuOpen?: () => void;
+  onMenuClose?: () => void;
+}) => {
   const [contactHovered, setContactHovered] = React.useState(false);
 
   const handleNavClick = (href: string) => (e: React.MouseEvent) => {
@@ -50,6 +54,14 @@ const NavBar = () => {
     }
   };
 
+  const desktopNavLinks = NAV_LINKS.filter((link) => link.label !== "Home");
+
+  const menuItems = NAV_LINKS.map((link) => ({
+    label: link.label,
+    ariaLabel: link.ariaLabel,
+    link: link.href,
+  }));
+
   return (
     <header className="w-full flex items-center justify-between px-6 py-6 z-60 relative bg-white">
       <div
@@ -58,9 +70,8 @@ const NavBar = () => {
       >
         LJR
       </div>
-      {/* Desktop nav */}
       <nav className="hidden md:flex items-center h-10 px-22">
-        {navLinks.map((link) =>
+        {desktopNavLinks.map((link) =>
           link.label === "Contact" ? (
             <div key={link.href} className="flex">
               <a
@@ -70,6 +81,7 @@ const NavBar = () => {
                 onMouseEnter={() => setContactHovered(true)}
                 onMouseLeave={() => setContactHovered(false)}
                 style={{ fontFamily: "'Koulen', sans-serif" }}
+                aria-label={link.ariaLabel}
               >
                 <span>{link.label}</span>
               </a>
@@ -90,13 +102,13 @@ const NavBar = () => {
               onClick={handleNavClick(link.href)}
               className="quick-flip text-black text-2xl flex items-center h-full mr-8 last:mr-0 font-sans"
               style={{ fontFamily: "'Koulen', sans-serif" }}
+              aria-label={link.ariaLabel}
             >
               <span>{link.label}</span>
             </a>
           ),
         )}
       </nav>
-      {/* Mobile nav: StaggeredMenu */}
       <div className="md:hidden">
         <StaggeredMenu
           isFixed
@@ -108,10 +120,10 @@ const NavBar = () => {
           menuButtonColor="#000"
           openMenuButtonColor="#000"
           changeMenuColorOnOpen={true}
-          colors={["#B19EEF", "#5227FF"]}
-          accentColor="#ff2929"
-          onMenuOpen={() => console.log("Menu opened")}
-          onMenuClose={() => console.log("Menu closed")}
+          colors={["#1E1E1E", "#4A5565"]}
+          accentColor="#4A5565"
+          onMenuOpen={onMenuOpen}
+          onMenuClose={onMenuClose}
         />
       </div>
     </header>

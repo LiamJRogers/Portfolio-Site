@@ -18,6 +18,7 @@ function App() {
   const [cardHover, setCardHover] = useState(false);
   const [invert, setInvert] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
   const smootherRef = useRef<any>(null);
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -74,14 +75,18 @@ function App() {
     }
 
     if (footerRef.current && projectsRef.current) {
-      gsap.set(footerRef.current, { yPercent: -50 });
+      const isMobile = window.innerWidth < 768;
+      const initialYPercent = isMobile ? -20 : -50;
+      const endValue = isMobile ? "+=60%" : "+=99%";
+
+      gsap.set(footerRef.current, { yPercent: initialYPercent });
 
       footerUncoverTimeline = gsap
         .timeline({
           scrollTrigger: {
             trigger: projectsRef.current,
             start: "bottom bottom",
-            end: "+=75%",
+            end: endValue,
             scrub: true,
           },
         })
@@ -102,6 +107,18 @@ function App() {
     };
   }, [loading]);
 
+  useEffect(() => {
+    if (menuOpen) {
+      ScrollTrigger.getAll().forEach((st) => st.disable(false));
+      if (smootherRef.current) smootherRef.current.paused(true);
+      document.body.style.overflow = "hidden";
+    } else {
+      ScrollTrigger.getAll().forEach((st) => st.enable());
+      if (smootherRef.current) smootherRef.current.paused(false);
+      document.body.style.overflow = "";
+    }
+  }, [menuOpen]);
+
   return (
     <>
       {loading && <Preloader onFinish={() => setLoading(false)} />}
@@ -115,7 +132,10 @@ function App() {
           <div id="smooth-content">
             <main>
               <div id="hero" ref={heroRef}>
-                <Hero />
+                <Hero
+                  onMenuOpen={() => setMenuOpen(true)}
+                  onMenuClose={() => setMenuOpen(false)}
+                />
               </div>
               <div id="about" ref={aboutRef}>
                 <About

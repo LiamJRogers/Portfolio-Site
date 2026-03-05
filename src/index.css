@@ -178,3 +178,13 @@ a:focus-visible {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+.min-h-dvh {
+  min-height: 100dvh;
+}
+
+@media (max-width: 767px) {
+  .min-h-dvh {
+    min-height: calc(100dvh + 115px);
+  }
+}

@@ -99,7 +99,7 @@ const About = ({
           </>
         )}
       </div>
-      <div className="flex-[1.5] min-w-0 h-screen relative z-10 flex items-center justify-center">
+      <div className="flex-[1.5] min-w-0 relative z-10 flex items-center justify-center">
         <div className="w-full h-full invisible" aria-hidden="true" />
       </div>
       <div

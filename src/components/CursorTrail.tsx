@@ -4,11 +4,22 @@ import { gsap } from "gsap";
 const CIRCLE_SIZE = 34;
 const CIRCLE_SIZE_HOVER = 84;
 
+function isTouchDevice() {
+  return (
+    typeof window !== "undefined" &&
+    ("ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      // @ts-ignore
+      navigator.msMaxTouchPoints > 0)
+  );
+}
+
 const CursorTrail: React.FC<{
   active: boolean;
   cardHover?: boolean;
   invert?: boolean;
 }> = ({ active, cardHover = false, invert = false }) => {
+  if (isTouchDevice()) return null;
   const circleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

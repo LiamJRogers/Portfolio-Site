@@ -20,7 +20,7 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 const VerticalSocialBar = () => (
-  <div className="absolute bottom-8 left-10 flex flex-col items-center z-30">
+  <div className="absolute bottom-40 md:bottom-8 left-10 flex flex-col items-center z-30">
     <div className="flex flex-col gap-6 mb-6">
       {socials.map((social) => (
         <Magnet

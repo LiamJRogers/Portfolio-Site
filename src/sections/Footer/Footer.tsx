@@ -20,16 +20,16 @@ const Footer = ({
       onMouseEnter={() => setCursorActive(true)}
       onMouseLeave={() => setCursorActive(false)}
     >
-      <div className="flex flex-row items-center justify-center w-full max-w-6xl gap-12">
+      <div className="flex flex-col sm:flex-row items-center justify-center w-full max-w-6xl gap-12 pl-4 sm:pl-16">
         <motion.div
-          className="flex flex-col items-start justify-center flex-1"
+          className="flex flex-col items-start justify-center w-full sm:w-1/2 flex-1"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.h2
-            className="text-6xl md:text-7xl font-extrabold text-gray-900 mb-6"
+            className="text-6xl md:text-7xl font-extrabold text-gray-900 mb-6 pt-8 sm:pt-0"
             style={{ fontFamily: "'Koulen', cursive" }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -106,7 +106,7 @@ const Footer = ({
           </motion.div>
         </motion.div>
         <motion.div
-          className="flex flex-col items-center justify-center flex-1"
+          className="flex flex-col items-center justify-center w-full sm:w-1/2 flex-1 mt-12 sm:mt-0"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.2 }}
@@ -119,11 +119,20 @@ const Footer = ({
             Currently on repeat:
           </span>
           <VinylPlayer setInvert={setInvert} />
+          <span
+            className="block sm:hidden mt-8 mb-6 text-xs text-gray-500"
+            style={{ fontFamily: "'Nothing You Could Do', cursive" }}
+          >
+            © {new Date().getFullYear()} Liam Jack Rogers. All rights reserved.
+          </span>
         </motion.div>
       </div>
       <motion.div
-        className="absolute left-6 bottom-6 text-xs text-gray-500"
-        style={{ fontFamily: "'Nothing You Could Do', cursive" }}
+        className="hidden sm:block absolute left-6 bottom-6 text-xs text-gray-500"
+        style={{
+          fontFamily: "'Nothing You Could Do', cursive",
+          paddingLeft: "0.5rem",
+        }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.6 }}

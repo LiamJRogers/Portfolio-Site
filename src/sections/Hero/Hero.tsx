@@ -17,7 +17,13 @@ function useIsDesktop() {
   return isDesktop;
 }
 
-const Hero = () => {
+const Hero = ({
+  onMenuOpen,
+  onMenuClose,
+}: {
+  onMenuOpen?: () => void;
+  onMenuClose?: () => void;
+}) => {
   const isDesktop = useIsDesktop();
   const [cursorActive, setCursorActive] = React.useState(false);
 
@@ -44,11 +50,12 @@ const Hero = () => {
 
   return (
     <section
-      className="min-h-screen flex flex-col relative overflow-hidden"
+      className="min-h-dvh flex flex-col relative overflow-hidden"
       onMouseEnter={() => setCursorActive(true)}
       onMouseLeave={() => setCursorActive(false)}
     >
-      <NavBar />
+      {/* Pass the handlers to NavBar */}
+      <NavBar onMenuOpen={onMenuOpen} onMenuClose={onMenuClose} />
       <VerticalSocialBar />
       {isDesktop && cursorActive && (
         <SplashCursor className="pointer-events-none absolute inset-0 z-0" />
@@ -75,7 +82,7 @@ const Hero = () => {
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.04 * i }}
               viewport={{ once: true, amount: 0.5 }}
               style={{ display: "inline-block" }}
@@ -86,9 +93,8 @@ const Hero = () => {
         </span>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          viewport={{ once: true, amount: 0.5 }}
           className="text-6xl md:text-8xl font-bold text-black"
           style={{ fontFamily: "'Koulen', sans-serif" }}
         >
@@ -107,7 +113,7 @@ const Hero = () => {
           e.preventDefault();
           scrollToSection("about");
         }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer hidden sm:block"
         aria-label="Scroll to About"
       >
         <svg
