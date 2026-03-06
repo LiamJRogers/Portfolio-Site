@@ -1,6 +1,7 @@
 import React from "react";
 import ArrowOutward from "@mui/icons-material/ArrowOutward";
 import StaggeredMenu from "./StaggeredMenu";
+import { socials } from "../data/socials";
 
 const NAV_LINKS = [
   { label: "Home", href: "#", ariaLabel: "Go to home page" },
@@ -14,10 +15,10 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact", ariaLabel: "Get in touch" },
 ];
 
-const socialItems = [
-  { label: "GitHub", link: "https://github.com/yourusername" },
-  { label: "LinkedIn", link: "https://linkedin.com/in/yourusername" },
-];
+const socialItems = socials.map((s) => ({
+  label: s.name,
+  link: s.url,
+}));
 
 const NavBar = ({
   onMenuOpen,

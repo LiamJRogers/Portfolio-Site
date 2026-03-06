@@ -18,6 +18,18 @@ const CoverVariants = {
   },
 };
 
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false,
+  );
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 export default function VinylPlayer({
   setInvert,
 }: {
@@ -32,6 +44,7 @@ export default function VinylPlayer({
   const [trackUrl, setTrackUrl] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     fetch(`https://itunes.apple.com/lookup?id=${ALBUM_ID}&entity=song`)
@@ -57,6 +70,7 @@ export default function VinylPlayer({
   }, []);
 
   useEffect(() => {
+    if (isMobile) return;
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -73,7 +87,7 @@ export default function VinylPlayer({
       audio.removeEventListener("pause", handlePause);
       audio.removeEventListener("ended", handleEnded);
     };
-  }, [previewUrl]);
+  }, [previewUrl, isMobile]);
 
   let discState: "in" | "hover" | "out" = "in";
   if (isOut) discState = "out";
@@ -112,6 +126,60 @@ export default function VinylPlayer({
       }
     }
   };
+
+  if (isMobile) {
+    return (
+      <div className="flex flex-col items-center w-full max-w-xs md:max-w-80">
+        <div className="relative w-full aspect-square">
+          <div
+            className="absolute inset-0 m-auto rounded-full z-0 w-10/12 h-10/12"
+            style={{
+              background:
+                "radial-gradient(circle at center, #0a0a0a 0%, #000000 80%)",
+              boxShadow: "inset 0 0 10px rgba(255, 255, 255, 0.5)",
+              cursor: "default",
+            }}
+          >
+            <div
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 rounded-full"
+              style={{
+                background:
+                  "repeating-radial-gradient(circle at center, #333 0, #333 1px, transparent 1px, transparent 4px)",
+              }}
+            />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 h-1/4 bg-gray-400 rounded-full flex items-center justify-center" />
+          </div>
+          <div className="relative w-full h-full rounded shadow-xl z-10 overflow-hidden">
+            <img
+              src={artwork ?? undefined}
+              alt={trackName}
+              className="object-cover w-full h-full"
+              draggable={false}
+            />
+            <div className="absolute bottom-2 left-2 bg-white bg-opacity-80 rounded px-2 py-1 text-xs text-gray-800">
+              <div>{trackName}</div>
+              <div className="text-gray-500">{artistName}</div>
+            </div>
+          </div>
+        </div>
+        <span
+          className="text-xs text-gray-500 mt-4 text-center w-full"
+          style={{ fontFamily: "'Nothing You Could Do', cursive" }}
+        >
+          Music preview and artwork courtesy of{" "}
+          <a
+            href={trackUrl || "https://music.apple.com/"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            Apple Music
+          </a>
+          .
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center w-full max-w-xs md:max-w-80">

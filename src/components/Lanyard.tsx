@@ -51,6 +51,22 @@ export default function Lanyard({
 }: LanyardProps) {
   const [dragActive, setDragActive] = useState(false);
 
+  const [isSmall, setIsSmall] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth < 1024;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleResize = (): void => {
+      setIsSmall(window.innerWidth < 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return (): void => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div
       style={{
@@ -60,6 +76,7 @@ export default function Lanyard({
         pointerEvents: "auto",
         width: "100%",
         height: "100%",
+        cursor: isSmall ? "default" : undefined,
       }}
     >
       <div style={{ width: "100%", height: "100%", pointerEvents: "auto" }}>
@@ -73,7 +90,11 @@ export default function Lanyard({
         >
           <ambientLight intensity={Math.PI} />
           <Physics gravity={gravity} timeStep={1 / 60}>
-            <Band setInvert={setInvert} onDragChange={setDragActive} />
+            <Band
+              setInvert={setInvert}
+              onDragChange={setDragActive}
+              isSmall={isSmall}
+            />
           </Physics>
           <Environment blur={0.75}>
             <Lightformer
@@ -116,6 +137,7 @@ interface BandProps {
   minSpeed?: number;
   setInvert?: (invert: boolean) => void;
   onDragChange?: (active: boolean) => void;
+  isSmall: boolean;
 }
 
 function Band({
@@ -123,6 +145,7 @@ function Band({
   minSpeed = 0,
   setInvert,
   onDragChange,
+  isSmall,
 }: BandProps) {
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
@@ -158,22 +181,6 @@ function Band({
   const [dragged, drag] = useState<false | THREE.Vector3>(false);
   const [hovered, hover] = useState(false);
 
-  const [isSmall, setIsSmall] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth < 1024;
-    }
-    return false;
-  });
-
-  useEffect(() => {
-    const handleResize = (): void => {
-      setIsSmall(window.innerWidth < 1024);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return (): void => window.removeEventListener("resize", handleResize);
-  }, []);
-
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
@@ -183,16 +190,16 @@ function Band({
   ]);
 
   useEffect(() => {
-    if (hovered) {
+    if (hovered && !isSmall) {
       document.body.style.cursor = dragged ? "grabbing" : "grab";
       return () => {
         document.body.style.cursor = "auto";
       };
     }
-  }, [hovered, dragged]);
+  }, [hovered, dragged, isSmall]);
 
   useFrame((state, delta) => {
-    if (dragged && typeof dragged !== "boolean") {
+    if (dragged && typeof dragged !== "boolean" && !isSmall) {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
@@ -286,7 +293,7 @@ function Band({
           ref={card}
           {...segmentProps}
           type={
-            dragged
+            dragged && !isSmall
               ? ("kinematicPosition" as RigidBodyProps["type"])
               : ("dynamic" as RigidBodyProps["type"])
           }
@@ -295,28 +302,44 @@ function Band({
           <group
             scale={2.25}
             position={[0, -1.2, -0.05]}
-            onPointerOver={() => {
-              hover(true);
-              setInvert && setInvert(false);
-            }}
-            onPointerOut={() => {
-              hover(false);
-              setInvert && setInvert(true);
-            }}
-            onPointerUp={(e: any) => {
-              e.target.releasePointerCapture(e.pointerId);
-              drag(false);
-              onDragChange && onDragChange(false);
-            }}
-            onPointerDown={(e: any) => {
-              e.target.setPointerCapture(e.pointerId);
-              drag(
-                new THREE.Vector3()
-                  .copy(e.point)
-                  .sub(vec.copy(card.current.translation())),
-              );
-              onDragChange && onDragChange(true);
-            }}
+            onPointerOver={
+              isSmall
+                ? undefined
+                : () => {
+                    hover(true);
+                    setInvert && setInvert(false);
+                  }
+            }
+            onPointerOut={
+              isSmall
+                ? undefined
+                : () => {
+                    hover(false);
+                    setInvert && setInvert(true);
+                  }
+            }
+            onPointerUp={
+              isSmall
+                ? undefined
+                : (e: any) => {
+                    e.target.releasePointerCapture(e.pointerId);
+                    drag(false);
+                    onDragChange && onDragChange(false);
+                  }
+            }
+            onPointerDown={
+              isSmall
+                ? undefined
+                : (e: any) => {
+                    e.target.setPointerCapture(e.pointerId);
+                    drag(
+                      new THREE.Vector3()
+                        .copy(e.point)
+                        .sub(vec.copy(card.current.translation())),
+                    );
+                    onDragChange && onDragChange(true);
+                  }
+            }
           >
             <mesh geometry={nodes.card.geometry}>
               <meshPhysicalMaterial
