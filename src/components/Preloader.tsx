@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 const name = [
@@ -30,7 +30,14 @@ const Preloader: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (
+      letterRefs.current.length !== name.length ||
+      letterRefs.current.some((ref) => !ref)
+    ) {
+      return;
+    }
+
     letterRefs.current.forEach((ref, i) => {
       if (!ref) return;
       if (i !== 0 && i !== 5 && i !== 10) {
@@ -205,7 +212,9 @@ const Preloader: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
           {name.map((item, i) => (
             <span
               key={item.key}
-              ref={(el) => (letterRefs.current[i] = el)}
+              ref={(el) => {
+                letterRefs.current[i] = el;
+              }}
               style={{
                 display: "inline-block",
                 transition: "opacity 0.6s",

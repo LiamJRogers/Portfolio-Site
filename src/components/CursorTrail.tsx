@@ -19,37 +19,42 @@ const CursorTrail: React.FC<{
   cardHover?: boolean;
   invert?: boolean;
 }> = ({ active, cardHover = false, invert = false }) => {
-  if (isTouchDevice()) return null;
+  if (isTouchDevice() || !active) return null;
+
   const circleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!circleRef.current) return;
+    gsap.set(circleRef.current, {
+      opacity: 0.7,
+      x: -100,
+      y: -100,
+    });
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (!active) return;
       const size = cardHover ? CIRCLE_SIZE_HOVER : CIRCLE_SIZE;
       const x = e.clientX - size / 2;
       const y = e.clientY - size / 2;
-      if (circleRef.current) {
-        gsap.to(circleRef.current, {
-          x,
-          y,
-          width: size,
-          height: size,
-          duration: 0.35,
-          ease: "power2.out",
-        });
-      }
+      gsap.to(circleRef.current, {
+        x,
+        y,
+        width: size,
+        height: size,
+        opacity: 0.7,
+        duration: 0.35,
+        ease: "power2.out",
+      });
     };
 
-    if (active) {
-      window.addEventListener("mousemove", handleMouseMove);
-    }
+    window.addEventListener("mousemove", handleMouseMove);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [active, cardHover]);
+  }, [cardHover]);
 
   useEffect(() => {
     if (circleRef.current) {
+      const size = cardHover ? CIRCLE_SIZE_HOVER : CIRCLE_SIZE;
       gsap.to(circleRef.current, {
         background: cardHover ? (invert ? "#fff" : "#000") : "transparent",
         border: cardHover
@@ -59,11 +64,12 @@ const CursorTrail: React.FC<{
           : invert
             ? "2px solid #fff"
             : "2px solid #000",
-        opacity: active ? 0.7 : 0,
+        width: size,
+        height: size,
         duration: 0.2,
       });
     }
-  }, [cardHover, active, invert]);
+  }, [cardHover, invert]);
 
   return (
     <div
@@ -93,12 +99,12 @@ const CursorTrail: React.FC<{
               : "2px solid #000",
           pointerEvents: "none",
           zIndex: 50,
-          opacity: active ? 0.7 : 0,
-          transition: "opacity 0.2s",
           boxShadow: "0 2px 16px 0 rgba(0,0,0,0.08)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          opacity: 0.7,
+          transform: "translate(-100px, -100px)",
         }}
       >
         {cardHover && (

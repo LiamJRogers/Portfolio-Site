@@ -183,6 +183,15 @@ a:focus-visible {
   min-height: 100dvh;
 }
 
+.cursor-trail {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.cursor-trail.active {
+  opacity: 0.7;
+}
+
 @media (max-width: 767px) {
   .min-h-dvh {
     min-height: calc(100dvh + 115px);

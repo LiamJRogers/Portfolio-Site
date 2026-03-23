@@ -20,12 +20,13 @@ function useIsDesktop() {
 const Hero = ({
   onMenuOpen,
   onMenuClose,
+  setCursorActive,
 }: {
   onMenuOpen?: () => void;
   onMenuClose?: () => void;
+  setCursorActive: (active: boolean) => void;
 }) => {
   const isDesktop = useIsDesktop();
-  const [cursorActive, setCursorActive] = React.useState(false);
 
   const scrollToSection = (id: string) => {
     const selector = `#${id}`;
@@ -51,13 +52,12 @@ const Hero = ({
   return (
     <section
       className="min-h-dvh flex flex-col relative overflow-hidden"
-      onMouseEnter={() => setCursorActive(true)}
-      onMouseLeave={() => setCursorActive(false)}
+      onMouseEnter={() => setCursorActive(false)}
+      onMouseLeave={() => setCursorActive(true)}
     >
-      {/* Pass the handlers to NavBar */}
       <NavBar onMenuOpen={onMenuOpen} onMenuClose={onMenuClose} />
       <VerticalSocialBar />
-      {isDesktop && cursorActive && (
+      {isDesktop && (
         <SplashCursor className="pointer-events-none absolute inset-0 z-0" />
       )}
       <motion.span
