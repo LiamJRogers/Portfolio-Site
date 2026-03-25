@@ -38,17 +38,18 @@ const Preloader: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
       return;
     }
 
-    letterRefs.current.forEach((ref, i) => {
-      if (!ref) return;
-      if (i !== 0 && i !== 5 && i !== 10) {
-        gsap.to(ref, {
-          opacity: 0,
-          duration: 0.6,
-          delay: 1,
-          ease: "power2.inOut",
-        });
-      }
-    });
+    const fadeOut = () => {
+      const refsToFade = letterRefs.current.filter(
+        (_, i) => i !== 0 && i !== 5 && i !== 10,
+      );
+      gsap.to(refsToFade, {
+        autoAlpha: 0,
+        duration: 0.6,
+        ease: "power2.inOut",
+        delay: 1,
+        onComplete: moveTogether,
+      });
+    };
 
     const moveTogether = () => {
       const l = letterRefs.current[0];
@@ -147,7 +148,7 @@ const Preloader: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
       }
     };
 
-    setTimeout(moveTogether, 1800);
+    fadeOut();
   }, [onFinish]);
 
   if (!show) return null;
@@ -217,8 +218,10 @@ const Preloader: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
               }}
               style={{
                 display: "inline-block",
-                transition: "opacity 0.6s",
                 minWidth: item.letter === " " ? "0.5em" : undefined,
+                willChange: "opacity, transform",
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
               }}
             >
               {item.letter}

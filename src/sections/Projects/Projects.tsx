@@ -1,6 +1,8 @@
-import ProjectCard from "../../components/ProjectCard";
+import { lazy, Suspense } from "react";
 import { projects } from "../../data/projects";
 import { motion } from "framer-motion";
+
+const ProjectCard = lazy(() => import("../../components/ProjectCard"));
 
 const Projects = ({
   setCursorActive,
@@ -36,63 +38,67 @@ const Projects = ({
       Project Highlights
     </motion.h2>
     <div className="flex flex-col w-full gap-y-8 md:hidden">
-      {projects.map((project, idx) => (
-        <div key={idx}>
-          <ProjectCard
-            project={project}
-            showTitleBelow={true}
-            onCardHover={setCardHover}
-            size="full"
-          />
-        </div>
-      ))}
+      <Suspense fallback={<div style={{ height: 200 }} />}>
+        {projects.map((project, idx) => (
+          <div key={idx}>
+            <ProjectCard
+              project={project}
+              showTitleBelow={true}
+              onCardHover={setCardHover}
+              size="full"
+            />
+          </div>
+        ))}
+      </Suspense>
     </div>
     <div className="hidden md:flex flex-col w-full gap-y-4">
-      {projects.map((project, idx) =>
-        idx % 2 === 0 ? (
-          <div key={idx} className="flex flex-row w-full gap-x-4">
-            {idx % 4 === 0 ? (
-              <>
-                <div className="flex-1">
-                  <ProjectCard
-                    project={project}
-                    onCardHover={setCardHover}
-                    size="large"
-                  />
-                </div>
-                {projects[idx + 1] && (
-                  <div className="shrink-0 grow-0 w-[40%]">
-                    <ProjectCard
-                      project={projects[idx + 1]}
-                      onCardHover={setCardHover}
-                      size="small"
-                    />
-                  </div>
-                )}
-              </>
-            ) : (
-              <>
-                <div className="shrink-0 grow-0 w-[40%]">
-                  <ProjectCard
-                    project={project}
-                    onCardHover={setCardHover}
-                    size="small"
-                  />
-                </div>
-                {projects[idx + 1] && (
+      <Suspense fallback={<div style={{ height: 300 }} />}>
+        {projects.map((project, idx) =>
+          idx % 2 === 0 ? (
+            <div key={idx} className="flex flex-row w-full gap-x-4">
+              {idx % 4 === 0 ? (
+                <>
                   <div className="flex-1">
                     <ProjectCard
-                      project={projects[idx + 1]}
+                      project={project}
                       onCardHover={setCardHover}
                       size="large"
                     />
                   </div>
-                )}
-              </>
-            )}
-          </div>
-        ) : null,
-      )}
+                  {projects[idx + 1] && (
+                    <div className="shrink-0 grow-0 w-[40%]">
+                      <ProjectCard
+                        project={projects[idx + 1]}
+                        onCardHover={setCardHover}
+                        size="small"
+                      />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="shrink-0 grow-0 w-[40%]">
+                    <ProjectCard
+                      project={project}
+                      onCardHover={setCardHover}
+                      size="small"
+                    />
+                  </div>
+                  {projects[idx + 1] && (
+                    <div className="flex-1">
+                      <ProjectCard
+                        project={projects[idx + 1]}
+                        onCardHover={setCardHover}
+                        size="large"
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          ) : null,
+        )}
+      </Suspense>
     </div>
   </section>
 );

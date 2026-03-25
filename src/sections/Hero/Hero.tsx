@@ -1,9 +1,10 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import NavBar from "../../components/NavBar";
 import VerticalSocialBar from "../../components/VerticalSocialBar";
-import SplashCursor from "../../components/SplashCursor";
 import { motion } from "framer-motion";
 import TextReveal from "../../components/TextReveal";
+
+const SplashCursor = lazy(() => import("../../components/SplashCursor"));
 
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = React.useState(
@@ -58,7 +59,9 @@ const Hero = ({
       <NavBar onMenuOpen={onMenuOpen} onMenuClose={onMenuClose} />
       <VerticalSocialBar />
       {isDesktop && (
-        <SplashCursor className="pointer-events-none absolute inset-0 z-0" />
+        <Suspense fallback={null}>
+          <SplashCursor className="pointer-events-none absolute inset-0 z-0" />
+        </Suspense>
       )}
       <motion.span
         initial={{ opacity: 0 }}
