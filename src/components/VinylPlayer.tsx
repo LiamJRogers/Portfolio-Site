@@ -46,7 +46,13 @@ export default function VinylPlayer({
   const audioRef = useRef<HTMLAudioElement>(null);
   const isMobile = useIsMobile();
 
+  const [cookieConsent, setCookieConsent] = useState<null | boolean>(() => {
+    const stored = localStorage.getItem("cookieConsent");
+    return stored === null ? null : stored === "true";
+  });
+
   useEffect(() => {
+    if (cookieConsent === false) return;
     fetch(`https://itunes.apple.com/lookup?id=${ALBUM_ID}&entity=song`)
       .then((res) => res.json())
       .then((data) => {
@@ -67,7 +73,7 @@ export default function VinylPlayer({
           setTrackUrl(track.trackViewUrl || null);
         }
       });
-  }, []);
+  }, [cookieConsent]);
 
   useEffect(() => {
     if (isMobile) return;
@@ -176,6 +182,51 @@ export default function VinylPlayer({
             Apple Music
           </a>
           .
+        </span>
+      </div>
+    );
+  }
+
+  if (cookieConsent === false) {
+    return (
+      <div className="flex flex-col items-center w-full max-w-xs md:max-w-80">
+        <div className="relative w-full aspect-square">
+          <div
+            className="absolute inset-0 m-auto rounded-full z-0 w-10/12 h-10/12"
+            style={{
+              background:
+                "radial-gradient(circle at center, #0a0a0a 0%, #000000 80%)",
+              boxShadow: "inset 0 0 10px rgba(255, 255, 255, 0.5)",
+              cursor: "default",
+            }}
+          >
+            <div
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 rounded-full"
+              style={{
+                background:
+                  "repeating-radial-gradient(circle at center, #333 0, #333 1px, transparent 1px, transparent 4px)",
+              }}
+            />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 h-1/4 bg-gray-400 rounded-full flex items-center justify-center" />
+          </div>
+          <div className="relative w-full h-full rounded shadow-xl z-10 overflow-hidden">
+            <img
+              src={artwork ?? undefined}
+              alt={trackName}
+              className="object-cover w-full h-full"
+              draggable={false}
+            />
+            <div className="absolute bottom-2 left-2 bg-white bg-opacity-80 rounded px-2 py-1 text-xs text-gray-800">
+              <div>{trackName}</div>
+              <div className="text-gray-500">{artistName}</div>
+            </div>
+          </div>
+        </div>
+        <span
+          className="text-xs text-gray-500 mt-4 text-center w-full"
+          style={{ fontFamily: "'Nothing You Could Do', cursive" }}
+        >
+          Accept cookies to enable music preview and Apple Music artwork.
         </span>
       </div>
     );

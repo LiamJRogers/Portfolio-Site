@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import CookieConsentBanner from "./CookieConsentBanner";
 
 const name = [
   { letter: "L", key: "L" },
@@ -30,8 +31,14 @@ const Preloader: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(true);
 
+  const [cookieConsent, setCookieConsent] = useState<null | boolean>(() => {
+    const stored = localStorage.getItem("cookieConsent");
+    return stored === null ? null : stored === "true";
+  });
+
   useLayoutEffect(() => {
     if (
+      cookieConsent === null ||
       letterRefs.current.length !== name.length ||
       letterRefs.current.some((ref) => !ref)
     ) {
@@ -149,7 +156,17 @@ const Preloader: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
     };
 
     fadeOut();
-  }, [onFinish]);
+  }, [onFinish, cookieConsent]);
+
+  const handleAccept = () => {
+    localStorage.setItem("cookieConsent", "true");
+    setCookieConsent(true);
+  };
+
+  const handleDecline = () => {
+    localStorage.setItem("cookieConsent", "false");
+    setCookieConsent(false);
+  };
 
   if (!show) return null;
 
@@ -160,9 +177,14 @@ const Preloader: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
         position: "fixed",
         inset: 0,
         zIndex: 9999,
-        pointerEvents: "none",
       }}
     >
+      {cookieConsent === null && (
+        <CookieConsentBanner
+          onAccept={handleAccept}
+          onDecline={handleDecline}
+        />
+      )}
       <div
         ref={topRef}
         style={{

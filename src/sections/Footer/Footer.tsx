@@ -1,8 +1,10 @@
-import VinylPlayer from "../../components/VinylPlayer";
+import React, { lazy, Suspense } from "react";
 import ArrowOutward from "@mui/icons-material/ArrowOutward";
-import React from "react";
 import { socials } from "../../data/socials";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
+const VinylPlayer = lazy(() => import("../../components/VinylPlayer"));
 
 const Footer = ({
   setCursorActive,
@@ -118,9 +120,18 @@ const Footer = ({
           >
             Currently on repeat:
           </span>
-          <VinylPlayer setInvert={setInvert} />
+          <Suspense fallback={<div style={{ height: 300 }} />}>
+            <VinylPlayer setInvert={setInvert} />
+          </Suspense>
+          <Link
+            to="/PrivacyPolicy"
+            className="block sm:hidden mt-8 mb-2 text-xs text-gray-500 underline"
+            style={{ fontFamily: "'Nothing You Could Do', cursive" }}
+          >
+            Privacy Policy
+          </Link>
           <span
-            className="block sm:hidden mt-8 mb-6 text-xs text-gray-500"
+            className="block sm:hidden mb-6 text-xs text-gray-500"
             style={{ fontFamily: "'Nothing You Could Do', cursive" }}
           >
             © {new Date().getFullYear()} Liam Jack Rogers. All rights reserved.
@@ -135,10 +146,28 @@ const Footer = ({
         }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.6 }}
+        transition={{ duration: 1, delay: 0.3 }}
         viewport={{ once: true, amount: 0.3 }}
       >
         © {new Date().getFullYear()} Liam Jack Rogers. All rights reserved.
+      </motion.div>
+      <motion.div
+        className="hidden sm:block absolute right-6 bottom-6"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.5 }}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <Link
+          to="/PrivacyPolicy"
+          className="text-xs text-gray-500 underline"
+          style={{
+            fontFamily: "'Nothing You Could Do', cursive",
+            paddingRight: "0.5rem",
+          }}
+        >
+          Privacy Policy
+        </Link>
       </motion.div>
     </section>
   );
