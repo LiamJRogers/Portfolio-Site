@@ -252,7 +252,7 @@ const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
       }
     }, [active, animationDefaults, isTouch]);
 
-    const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
+    const handleMouseEnter = (ev: React.MouseEvent<HTMLDivElement>) => {
       if (isTouch) return;
       if (!itemRef.current) return;
       const rect = itemRef.current.getBoundingClientRect();
@@ -265,7 +265,7 @@ const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
       onHover(true);
     };
 
-    const handleMouseLeave = (ev: React.MouseEvent<HTMLAnchorElement>) => {
+    const handleMouseLeave = (ev: React.MouseEvent<HTMLDivElement>) => {
       if (isTouch) return;
       if (!itemRef.current) return;
       const rect = itemRef.current.getBoundingClientRect();
@@ -290,18 +290,18 @@ const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
         }}
         style={{ borderTop: isFirst ? "none" : `1px solid ${borderColor}` }}
       >
-        <a
-          className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-semibold text-5xl"
+        <div
+          className="flex items-center justify-center h-full relative uppercase font-semibold text-5xl select-none"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           style={{
             color: textColor,
             fontFamily: "'Koulen', sans-serif",
           }}
-          tabIndex={0}
+          tabIndex={-1}
         >
           {text}
-        </a>
+        </div>
         <div
           className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none translate-y-[101%]"
           ref={marqueeRef}

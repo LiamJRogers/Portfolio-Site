@@ -320,9 +320,10 @@ export default function VinylPlayer({
             {(isHovered || isOut) && (
               <motion.span
                 className="absolute right-3 top-1/2 -translate-y-1/2 transition-all"
-                animate={{ rotate: isOut ? 180 : 0, opacity: 1 }}
-                initial={{ opacity: 0 }}
-                exit={{ opacity: 0 }}
+                animate={{
+                  rotate: isOut ? 180 : 0,
+                  opacity: isHovered || isOut ? 1 : 0,
+                }}
                 transition={{
                   duration: 0.3,
                   ease: "easeInOut",

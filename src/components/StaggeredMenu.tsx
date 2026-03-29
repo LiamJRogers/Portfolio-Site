@@ -434,6 +434,39 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     };
   }, [closeOnClickAway, open, closeMenu]);
 
+  const handleMenuNavClick = useCallback(
+    (href: string) => (e: React.MouseEvent) => {
+      if (href.startsWith("#")) {
+        e.preventDefault();
+        closeMenu();
+
+        const id = href.replace("#", "");
+        const el = document.getElementById(id);
+
+        const smoother =
+          (window as any)._smoother ||
+          ((window as any).ScrollSmoother &&
+            typeof (window as any).ScrollSmoother.get === "function" &&
+            (window as any).ScrollSmoother.get()) ||
+          null;
+
+        if (smoother && el) {
+          const y = el.getBoundingClientRect().top + window.scrollY;
+          smoother.scrollTo(y, true, "top");
+          setTimeout(() => (window as any).ScrollTrigger?.refresh?.(), 250);
+          return;
+        }
+
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      } else {
+        closeMenu();
+      }
+    },
+    [closeMenu],
+  );
+
   return (
     <div
       className={`sm-scope z-40 ${isFixed ? "fixed top-0 left-0 w-screen h-screen overflow-hidden" : "w-full h-full"}`}
@@ -557,7 +590,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                       href={it.link}
                       aria-label={it.ariaLabel}
                       data-index={idx + 1}
-                      onClick={closeMenu}
+                      onClick={handleMenuNavClick(it.link)}
                     >
                       <span className="sm-panel-itemLabel inline-block origin-[50%_100%] will-change-transform">
                         {it.label}

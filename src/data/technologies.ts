@@ -108,7 +108,7 @@ export const technologies = [
       },
       {
         text: "Jira",
-        image: "https://skillicons.dev/icons?i=jira&theme=light",
+        image: "/icons/jira.png",
       },
     ],
   },

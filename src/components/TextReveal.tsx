@@ -70,7 +70,7 @@ export const TextReveal = ({
       onTouchStart={mouseEnterHandler}
       ref={containerRef}
       role="button"
-      tabIndex={0}
+      tabIndex={-1}
     >
       <motion.div
         animate={
