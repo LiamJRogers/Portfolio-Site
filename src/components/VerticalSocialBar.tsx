@@ -29,7 +29,13 @@ const VerticalSocialBar = () => (
           disabled={false}
           magnetStrength={6}
         >
-          <a href={social.url} target="_blank" rel="noopener noreferrer">
+          <a
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Visit my ${social.name} profile`}
+            title={social.name}
+          >
             {iconMap[social.icon]}
           </a>
         </Magnet>
@@ -42,5 +48,4 @@ const VerticalSocialBar = () => (
     </div>
   </div>
 );
-
 export default VerticalSocialBar;
