@@ -46,7 +46,7 @@ export default function VinylPlayer({
   const audioRef = useRef<HTMLAudioElement>(null);
   const isMobile = useIsMobile();
 
-  const [cookieConsent, setCookieConsent] = useState<null | boolean>(() => {
+  const [cookieConsent] = useState<null | boolean>(() => {
     const stored = localStorage.getItem("cookieConsent");
     return stored === null ? null : stored === "true";
   });

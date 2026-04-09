@@ -3,6 +3,18 @@ import ArrowOutward from "@mui/icons-material/ArrowOutward";
 import StaggeredMenu from "./StaggeredMenu";
 import { socials } from "../data/socials";
 
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = React.useState(
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false,
+  );
+  React.useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 const NAV_LINKS = [
   { label: "Home", href: "#", ariaLabel: "Go to home page" },
   { label: "About", href: "#about", ariaLabel: "Learn about me" },
@@ -28,6 +40,7 @@ const NavBar = ({
   onMenuClose?: () => void;
 }) => {
   const [contactHovered, setContactHovered] = React.useState(false);
+  const isMobile = useIsMobile();
 
   const handleNavClick = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -75,17 +88,30 @@ const NavBar = ({
         {desktopNavLinks.map((link) =>
           link.label === "Contact" ? (
             <div key={link.href} className="flex">
-              <a
-                href={link.href}
-                onClick={handleNavClick(link.href)}
-                className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-2xl transition flex items-center font-sans ${contactHovered ? "quick-flip-hover" : ""}`}
-                onMouseEnter={() => setContactHovered(true)}
-                onMouseLeave={() => setContactHovered(false)}
-                style={{ fontFamily: "'Koulen', sans-serif" }}
-                aria-label={link.ariaLabel}
-              >
-                <span>{link.label}</span>
-              </a>
+              {isMobile ? (
+                <a
+                  href={link.href}
+                  onClick={handleNavClick(link.href)}
+                  className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-2xl transition flex items-center font-sans ${contactHovered ? "quick-flip-hover" : ""}`}
+                  onMouseEnter={() => setContactHovered(true)}
+                  onMouseLeave={() => setContactHovered(false)}
+                  style={{ fontFamily: "'Koulen', sans-serif" }}
+                  aria-label={link.ariaLabel}
+                >
+                  <span>{link.label}</span>
+                </a>
+              ) : (
+                <a
+                  href="mailto:liam@ljrogers.co.uk"
+                  className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-2xl transition flex items-center font-sans ${contactHovered ? "quick-flip-hover" : ""}`}
+                  onMouseEnter={() => setContactHovered(true)}
+                  onMouseLeave={() => setContactHovered(false)}
+                  style={{ fontFamily: "'Koulen', sans-serif" }}
+                  aria-label="Email me"
+                >
+                  <span>{link.label}</span>
+                </a>
+              )}
               <span
                 className={`quick-flip flex items-center justify-center py-2 px-3 rounded-full bg-black text-white cursor-pointer shadow transition ${contactHovered ? "quick-flip-hover" : ""}`}
                 onMouseEnter={() => setContactHovered(true)}

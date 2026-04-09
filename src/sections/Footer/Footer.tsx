@@ -88,7 +88,7 @@ const Footer = ({
             viewport={{ once: true, amount: 0.3 }}
           >
             <a
-              href="mailto:liam@example.com"
+              href="mailto:liam@ljrogers.co.uk"
               className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-lg transition flex items-center ${emailHovered ? "quick-flip-hover" : ""}`}
               onMouseEnter={() => setEmailHovered(true)}
               onMouseLeave={() => setEmailHovered(false)}
