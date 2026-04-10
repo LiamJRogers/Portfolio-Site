@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 
-const ALBUM_ID = 1094908663;
-
 const DiscVariants = {
   in: { x: "0%", opacity: 0.9 },
   hover: { x: "25%", opacity: 1 },
@@ -53,7 +51,7 @@ export default function VinylPlayer({
 
   useEffect(() => {
     if (cookieConsent === false) return;
-    fetch(`https://itunes.apple.com/lookup?id=${ALBUM_ID}&entity=song`)
+    fetch("/itunes-data.json")
       .then((res) => res.json())
       .then((data) => {
         const album = data.results && data.results[0];
@@ -340,7 +338,7 @@ export default function VinylPlayer({
         </motion.div>
       </div>
       <span
-        className="text-xs text-gray-500 mt-4 text-center w-full"
+        className="text-xs text-gray-500 mt-4 text-center w-full hover:text-gray-700"
         style={{ fontFamily: "'Nothing You Could Do', cursive" }}
       >
         Music preview and artwork courtesy of{" "}

@@ -3,6 +3,8 @@ import ArrowOutward from "@mui/icons-material/ArrowOutward";
 import { socials } from "../../data/socials";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { QuickFlip } from "../../components/QuickFlip";
+import { QuickFlipIcon } from "../../components/QuickFlipIcon";
 
 const VinylPlayer = lazy(() => import("../../components/VinylPlayer"));
 
@@ -75,7 +77,7 @@ const Footer = ({
                   className="quick-flip text-gray-600 text-xl flex items-center h-full transition hover:text-gray-700"
                   style={{ fontFamily: "'Hind Vadodara', sans-serif" }}
                 >
-                  <span>{social.name}</span>
+                  <QuickFlip label={social.name} />
                 </a>
               </motion.li>
             ))}
@@ -89,20 +91,30 @@ const Footer = ({
           >
             <a
               href="mailto:liam@ljrogers.co.uk"
-              className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-lg transition flex items-center ${emailHovered ? "quick-flip-hover" : ""}`}
+              className="bg-black text-white rounded-full px-4 py-3 text-lg transition flex items-center"
               onMouseEnter={() => setEmailHovered(true)}
               onMouseLeave={() => setEmailHovered(false)}
               style={{ fontFamily: "'Hind Vadodara', sans-serif" }}
+              aria-label="Email me"
             >
-              <span>Drop me an email</span>
+              <span
+                className={`quick-flip${emailHovered ? " is-flipped" : ""}`}
+              >
+                <QuickFlip label="Drop me an email" />
+              </span>
             </a>
             <span
-              className={`quick-flip flex items-center justify-center py-2 px-3 rounded-full bg-black text-white cursor-pointer shadow transition ${emailHovered ? "quick-flip-hover" : ""}`}
+              className="flex items-center justify-center py-2 px-3 rounded-full bg-black text-white cursor-pointer shadow transition"
               onMouseEnter={() => setEmailHovered(true)}
               onMouseLeave={() => setEmailHovered(false)}
             >
-              <span className="mb-1">
-                <ArrowOutward fontSize="small" />
+              <span
+                className={`quick-flip-icon${emailHovered ? " is-flipped" : ""}`}
+              >
+                <QuickFlipIcon
+                  front={<ArrowOutward fontSize="small" />}
+                  back={<ArrowOutward fontSize="small" />}
+                />
               </span>
             </span>
           </motion.div>
@@ -160,7 +172,7 @@ const Footer = ({
       >
         <Link
           to="/PrivacyPolicy"
-          className="text-xs text-gray-500 underline"
+          className="text-xs text-gray-500 underline hover:text-gray-700"
           style={{
             fontFamily: "'Nothing You Could Do', cursive",
             paddingRight: "0.5rem",

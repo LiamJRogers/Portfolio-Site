@@ -127,29 +127,48 @@
 }
 
 .quick-flip {
-  --transition-duration: 0.325s;
-  --timing-function: cubic-bezier(0.66, 0, 0.34, 1);
-  overflow-y: clip;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+  height: 1em;
 }
-.quick-flip > * {
+.quick-flip-inner {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.325s cubic-bezier(0.66, 0, 0.34, 1);
+}
+.quick-flip span {
+  line-height: 1;
+  margin: 0;
+  padding: 0;
   display: block;
-  transition:
-    transform var(--transition-duration) var(--timing-function),
-    translate 0ms calc(var(--transition-duration) / 2);
 }
-.quick-flip:is(:hover, :focus-within) > * {
-  transform: translateY(-2lh);
-  translate: 0 2lh;
+.quick-flip:hover .quick-flip-inner,
+.quick-flip:focus .quick-flip-inner {
+  transform: translateY(-1em);
 }
-.quick-flip > *:focus {
-  outline: none;
+.quick-flip.is-flipped .quick-flip-inner {
+  transform: translateY(-1em);
 }
-
-.quick-flip.quick-flip-hover > * {
-  transform: translateY(-2lh);
-  translate: 0 2lh;
+.quick-flip-icon {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  width: 1.2em;
 }
-
+.quick-flip-icon .quick-flip-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.325s cubic-bezier(0.66, 0, 0.34, 1);
+}
+.quick-flip-icon:hover .quick-flip-inner,
+.quick-flip-icon:focus .quick-flip-inner {
+  transform: translateY(-1.6em);
+}
+.quick-flip-icon.is-flipped .quick-flip-inner {
+  transform: translateY(-1.6em);
+}
 #smooth-wrapper {
   overflow: hidden;
   width: 100vw;

@@ -2,6 +2,8 @@ import React from "react";
 import ArrowOutward from "@mui/icons-material/ArrowOutward";
 import StaggeredMenu from "./StaggeredMenu";
 import { socials } from "../data/socials";
+import { QuickFlip } from "./QuickFlip";
+import { QuickFlipIcon } from "./QuickFlipIcon";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = React.useState(
@@ -92,7 +94,7 @@ const NavBar = ({
                 <a
                   href={link.href}
                   onClick={handleNavClick(link.href)}
-                  className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-2xl transition flex items-center font-sans ${contactHovered ? "quick-flip-hover" : ""}`}
+                  className={`bg-black text-white rounded-full px-4 py-2 text-2xl transition flex items-center font-sans`}
                   onMouseEnter={() => setContactHovered(true)}
                   onMouseLeave={() => setContactHovered(false)}
                   style={{ fontFamily: "'Koulen', sans-serif" }}
@@ -103,22 +105,31 @@ const NavBar = ({
               ) : (
                 <a
                   href="mailto:liam@ljrogers.co.uk"
-                  className={`quick-flip bg-black text-white rounded-full px-4 py-2 text-2xl transition flex items-center font-sans ${contactHovered ? "quick-flip-hover" : ""}`}
+                  className={`bg-black text-white rounded-full px-4 py-3 text-2xl transition flex items-center font-sans`}
                   onMouseEnter={() => setContactHovered(true)}
                   onMouseLeave={() => setContactHovered(false)}
                   style={{ fontFamily: "'Koulen', sans-serif" }}
                   aria-label="Email me"
                 >
-                  <span>{link.label}</span>
+                  <span
+                    className={`quick-flip${contactHovered ? " is-flipped" : ""}`}
+                  >
+                    <QuickFlip label={link.label} />
+                  </span>
                 </a>
               )}
               <span
-                className={`quick-flip flex items-center justify-center py-2 px-3 rounded-full bg-black text-white cursor-pointer shadow transition ${contactHovered ? "quick-flip-hover" : ""}`}
+                className="flex items-center justify-center py-2 px-[15px] rounded-full bg-black text-white cursor-pointer shadow transition"
                 onMouseEnter={() => setContactHovered(true)}
                 onMouseLeave={() => setContactHovered(false)}
               >
-                <span className="mb-1">
-                  <ArrowOutward fontSize="small" />
+                <span
+                  className={`quick-flip-icon${contactHovered ? " is-flipped" : ""}`}
+                >
+                  <QuickFlipIcon
+                    front={<ArrowOutward fontSize="medium" />}
+                    back={<ArrowOutward fontSize="medium" />}
+                  />
                 </span>
               </span>
             </div>
@@ -127,11 +138,11 @@ const NavBar = ({
               key={link.href}
               href={link.href}
               onClick={handleNavClick(link.href)}
-              className="quick-flip text-black text-2xl flex items-center h-full mr-8 last:mr-0 font-sans"
+              className="text-black text-2xl flex items-center h-full mr-8 last:mr-0 font-sans"
               style={{ fontFamily: "'Koulen', sans-serif" }}
               aria-label={link.ariaLabel}
             >
-              <span>{link.label}</span>
+              <QuickFlip label={link.label} />
             </a>
           ),
         )}
