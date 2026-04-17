@@ -29,6 +29,15 @@ const Hero = ({
 }) => {
   const isDesktop = useIsDesktop();
 
+  const [showArrow, setShowArrow] = React.useState(true);
+
+  React.useEffect(() => {
+    const handleResize = () => setShowArrow(window.innerHeight > 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const scrollToSection = (id: string) => {
     const selector = `#${id}`;
     const smoother =
@@ -98,7 +107,7 @@ const Hero = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="text-6xl md:text-8xl font-bold text-black"
+          className="text-6xl sm:text-7xl md:text-8xl font-bold text-black"
           style={{ fontFamily: "'Koulen', sans-serif" }}
         >
           Full Stack <br />
@@ -110,31 +119,33 @@ const Hero = ({
           className="mt-4 text-gray-700"
         />
       </div>
-      <a
-        href="#about"
-        onClick={(e) => {
-          e.preventDefault();
-          scrollToSection("about");
-        }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer hidden sm:block"
-        aria-label="Scroll to About"
-      >
-        <svg
-          width="36"
-          height="36"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-gray-600 animate-bounce"
-          style={{ animationDuration: "1.6s" }}
+      {showArrow && (
+        <a
+          href="#about"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToSection("about");
+          }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer hidden sm:block"
+          aria-label="Scroll to About"
         >
-          <line x1="12" y1="5" x2="12" y2="19" />
-          <polyline points="19 12 12 19 5 12" />
-        </svg>
-      </a>
+          <svg
+            width="36"
+            height="36"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-gray-600 animate-bounce"
+            style={{ animationDuration: "1.6s" }}
+          >
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <polyline points="19 12 12 19 5 12" />
+          </svg>
+        </a>
+      )}
     </section>
   );
 };

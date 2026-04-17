@@ -24,9 +24,9 @@ const Footer = ({
       onMouseEnter={() => setCursorActive(true)}
       onMouseLeave={() => setCursorActive(false)}
     >
-      <div className="flex flex-col sm:flex-row items-center justify-center w-full max-w-6xl gap-12 pl-4 sm:pl-16">
+      <div className="flex flex-col sm:flex-row items-center justify-center w-full max-w-6xl gap-6 p-8 md:gap-10 lg:gap-28">
         <motion.div
-          className="flex flex-col items-start justify-center w-full sm:w-1/2 flex-1"
+          className="flex flex-col items-start justify-center"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
@@ -120,7 +120,7 @@ const Footer = ({
           </motion.div>
         </motion.div>
         <motion.div
-          className="flex flex-col items-center justify-center w-full sm:w-1/2 flex-1 mt-12 sm:mt-0"
+          className="flex flex-col items-center justify-center mt-12 sm:mt-0"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.2 }}

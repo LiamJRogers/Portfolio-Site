@@ -5,7 +5,7 @@ import ChevronRight from "@mui/icons-material/ChevronRight";
 const DiscVariants = {
   in: { x: "0%", opacity: 0.9 },
   hover: { x: "25%", opacity: 1 },
-  out: { x: "80%", opacity: 1 },
+  out: { x: "75%", opacity: 1 },
 };
 
 const CoverVariants = {
@@ -42,7 +42,7 @@ export default function VinylPlayer({
   const [trackUrl, setTrackUrl] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const isMobile = useIsMobile();
+  const isNonInteractive = useIsMobile(1300);
 
   const [cookieConsent] = useState<null | boolean>(() => {
     const stored = localStorage.getItem("cookieConsent");
@@ -74,7 +74,7 @@ export default function VinylPlayer({
   }, [cookieConsent]);
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isNonInteractive) return;
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -91,11 +91,11 @@ export default function VinylPlayer({
       audio.removeEventListener("pause", handlePause);
       audio.removeEventListener("ended", handleEnded);
     };
-  }, [previewUrl, isMobile]);
+  }, [previewUrl, isNonInteractive]);
 
   let discState: "in" | "hover" | "out" = "in";
-  if (isOut) discState = "out";
-  else if (isHovered) discState = "hover";
+  if (isOut && !isNonInteractive) discState = "out";
+  else if (isHovered && !isNonInteractive) discState = "hover";
 
   const handleDiscIn = () => {
     setIsOut(false);
@@ -106,12 +106,14 @@ export default function VinylPlayer({
   };
 
   const handleDiscClick = () => {
+    if (isNonInteractive) return;
     if (isOut) {
       handleDiscIn();
     }
   };
 
   const handleArtworkClick = () => {
+    if (isNonInteractive) return;
     setIsOut((prev) => !prev);
     if (isOut) {
       handleDiscIn();
@@ -119,6 +121,7 @@ export default function VinylPlayer({
   };
 
   const handlePlayStopClick = (e: React.MouseEvent) => {
+    if (isNonInteractive) return;
     e.stopPropagation();
     if (audioRef.current && previewUrl) {
       if (isPlaying) {
@@ -130,60 +133,6 @@ export default function VinylPlayer({
       }
     }
   };
-
-  if (isMobile) {
-    return (
-      <div className="flex flex-col items-center w-full max-w-xs md:max-w-80">
-        <div className="relative w-full aspect-square">
-          <div
-            className="absolute inset-0 m-auto rounded-full z-0 w-10/12 h-10/12"
-            style={{
-              background:
-                "radial-gradient(circle at center, #0a0a0a 0%, #000000 80%)",
-              boxShadow: "inset 0 0 10px rgba(255, 255, 255, 0.5)",
-              cursor: "default",
-            }}
-          >
-            <div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 rounded-full"
-              style={{
-                background:
-                  "repeating-radial-gradient(circle at center, #333 0, #333 1px, transparent 1px, transparent 4px)",
-              }}
-            />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 h-1/4 bg-gray-400 rounded-full flex items-center justify-center" />
-          </div>
-          <div className="relative w-full h-full rounded shadow-xl z-10 overflow-hidden">
-            <img
-              src={artwork ?? undefined}
-              alt={trackName}
-              className="object-cover w-full h-full"
-              draggable={false}
-            />
-            <div className="absolute bottom-2 left-2 bg-white bg-opacity-80 rounded px-2 py-1 text-xs text-gray-800">
-              <div>{trackName}</div>
-              <div className="text-gray-500">{artistName}</div>
-            </div>
-          </div>
-        </div>
-        <span
-          className="text-xs text-gray-500 mt-4 text-center w-full"
-          style={{ fontFamily: "'Nothing You Could Do', cursive" }}
-        >
-          Music preview and artwork courtesy of{" "}
-          <a
-            href={trackUrl || "https://music.apple.com/"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            Apple Music
-          </a>
-          .
-        </span>
-      </div>
-    );
-  }
 
   if (cookieConsent === false) {
     return (
@@ -240,14 +189,18 @@ export default function VinylPlayer({
               background:
                 "radial-gradient(circle at center, #0a0a0a 0%, #000000 80%)",
               boxShadow: "inset 0 0 10px rgba(255, 255, 255, 0.5)",
-              cursor: isOut ? "pointer" : "default",
+              cursor: isNonInteractive
+                ? "not-allowed"
+                : isOut
+                  ? "pointer"
+                  : "default",
             }}
             variants={DiscVariants}
             initial="in"
             animate={discState}
             transition={{ duration: 0.7, ease: "easeInOut" }}
-            onClick={handleDiscClick}
-            onMouseEnter={() => setInvert(true)}
+            onClick={isNonInteractive ? undefined : handleDiscClick}
+            onMouseEnter={() => setInvert(!isNonInteractive)}
             onMouseLeave={() => setInvert(false)}
           >
             <div
@@ -259,12 +212,14 @@ export default function VinylPlayer({
             />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 h-1/4 bg-gray-400 rounded-full flex items-center justify-center">
               <motion.button
-                whileHover={{ scale: 1.15 }}
+                whileHover={isNonInteractive ? {} : { scale: 1.15 }}
                 className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-200 transition cursor-pointer"
                 style={{ outline: "none", border: "none" }}
-                tabIndex={0}
+                tabIndex={isNonInteractive ? -1 : 0}
                 aria-label={isPlaying ? "Stop" : "Play"}
-                onClick={handlePlayStopClick}
+                aria-disabled={isNonInteractive}
+                disabled={isNonInteractive}
+                onClick={isNonInteractive ? undefined : handlePlayStopClick}
               >
                 {isPlaying ? (
                   <svg
@@ -290,8 +245,14 @@ export default function VinylPlayer({
               </motion.button>
               <motion.div
                 className="absolute w-full h-full"
-                animate={{ rotate: isOut || isHovered ? 360 : 0 }}
-                transition={{ duration: 3, ease: "linear", repeat: Infinity }}
+                animate={{
+                  rotate: !isNonInteractive && (isOut || isHovered) ? 360 : 0,
+                }}
+                transition={{
+                  duration: 3,
+                  ease: "linear",
+                  repeat: Infinity,
+                }}
                 style={{ zIndex: -1 }}
               />
             </div>
@@ -303,10 +264,10 @@ export default function VinylPlayer({
           className="relative w-full h-full rounded shadow-xl z-10 overflow-hidden cursor-pointer"
           variants={CoverVariants}
           initial="initial"
-          whileHover="hover"
+          whileHover={isNonInteractive ? "initial" : "hover"}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          onClick={handleArtworkClick}
+          onClick={isNonInteractive ? undefined : handleArtworkClick}
         >
           <img
             src={artwork ?? undefined}
@@ -315,7 +276,7 @@ export default function VinylPlayer({
             draggable={false}
           />
           <AnimatePresence>
-            {(isHovered || isOut) && (
+            {!isNonInteractive && (isHovered || isOut) && (
               <motion.span
                 className="absolute right-3 top-1/2 -translate-y-1/2 transition-all"
                 animate={{
